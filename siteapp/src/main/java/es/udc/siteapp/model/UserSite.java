@@ -10,15 +10,13 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor
-public class User extends AuditModel {
+public class UserSite {
 
 	@Id
     @Column(name = "id")
-	private Long userId;
-	private String name;
-	private String surname;
-	private String nickname;
-	private String email;
-	private String password;
-//	private typeUserAuthority;
+	private Long userSiteId;
+	private Site site;
+	private User user;
+	private Integer rate;
+//	private state;
 }
