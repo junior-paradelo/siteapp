@@ -15,8 +15,8 @@ public class UserSite {
 	@Id
     @Column(name = "id")
 	private Long userSiteId;
-	private Site site;
-	private User user;
+//	private Site site;
+//	private User user;
 	private Integer rate;
-//	private state;
+//	private UserSiteState state;
 }
