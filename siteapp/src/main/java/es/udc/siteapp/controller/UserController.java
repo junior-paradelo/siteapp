@@ -66,6 +66,7 @@ public class UserController {
 			user.setName(userDto.getName());
 			user.setNickname(userDto.getNickname());
 			user.setSurname(userDto.getSurname());
+			userDAO.save(user);
 			return ResponseEntity.ok(userDto);
 		} else {
 			// Exception with error
