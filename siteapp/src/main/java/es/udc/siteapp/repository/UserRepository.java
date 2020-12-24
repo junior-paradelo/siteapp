@@ -8,8 +8,7 @@ import es.udc.siteapp.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-//	User findUserById(Long id);
-//	User findUserByName(String name);
-//	User findUserByNickname(String nickname);
+	User findUserByName(String name);
+	User findUserByNickname(String nickname);
 
 }

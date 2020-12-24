@@ -30,4 +30,14 @@ public class User extends AuditModel {
 	
 //	@Column(name = "type")
 //	private UserAuthority typeUserAuthority;
+	
+	public User(String name, String surname, String nickname, String email, String password) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.nickname = nickname;
+		this.email = email;
+		this.password = password;
+	}
+	
 }

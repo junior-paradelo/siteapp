@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
+	private Long id;
 	private String name;
 	private String surname;
 	private String nickname;
 	private String email;
 
 	public UserDTO(User user) {
+		id = user.getUserId();
 		name = user.getName();
 		surname = user.getSurname();
 		nickname = user.getNickname();
