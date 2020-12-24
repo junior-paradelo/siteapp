@@ -33,13 +33,13 @@ public class UserService {
 	}
 
 	public UserDTO getUserById(Long id) {
-		UserDTO userDTO = null;
+		UserDTO userDto = null;
 		Optional<User> optionalUser = userDAO.findById(id);
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
-			userDTO = new UserDTO(user);
+			userDto = new UserDTO(user);
 		}
-		return userDTO;
+		return userDto;
 	}
 
 	public UserDTO getUserByName(String name) {
