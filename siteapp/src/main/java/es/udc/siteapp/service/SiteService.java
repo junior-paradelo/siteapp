@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
+import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.repository.SiteRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
@@ -47,8 +48,8 @@ public class SiteService {
 		return new SiteDTO(site);
 	}
 
-	public Site registerSite(String name, String province, String townHall) {
-		Site site = new Site(name, province, townHall);
+	public Site registerSite(String name, String province, String townHall, Category category) {
+		Site site = new Site(name, province, townHall, category);
 		return siteDAO.save(site);
 	}
 

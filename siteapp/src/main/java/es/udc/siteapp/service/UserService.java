@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.User;
+import es.udc.siteapp.model.UserAuthority;
 import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
 import es.udc.siteapp.service.dto.UserDTO;
@@ -30,7 +31,7 @@ public class UserService {
 	}
 
 	public User registerUser(String name, String surname, String nickname, String email, String password) {
-		User user = new User(name, surname, nickname, email, password);
+		User user = new User(name, surname, nickname, email, password, UserAuthority.ROLE_USER, false);
 		return userDAO.save(user);
 	}
 

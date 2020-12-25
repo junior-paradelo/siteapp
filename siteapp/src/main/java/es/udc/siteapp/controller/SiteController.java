@@ -42,7 +42,8 @@ public class SiteController {
 
 	@PostMapping("sites")
 	public SiteDTO createSite(@RequestBody SiteDTO site) {
-		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall());
+		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall(),
+				site.getCategory());
 		return new SiteDTO(registerSite);
 	}
 

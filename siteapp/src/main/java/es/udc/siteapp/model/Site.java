@@ -1,5 +1,7 @@
 package es.udc.siteapp.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,12 +29,19 @@ public class Site extends AuditModel {
 	private String name;
 	private String province;
 	private String townHall;
+	private Category category;
+	@Column(nullable = false)
+	private boolean active;
 //	private Point coordenates;
 
-	public Site(String name, String province, String townHall) {
+	public Site(String name, String province, String townHall, Category category) {
 		super();
 		this.name = name;
 		this.province = province;
 		this.townHall = townHall;
+		this.category = category;
+		this.active = true;
+		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 	}
+
 }

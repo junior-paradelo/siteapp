@@ -1,5 +1,7 @@
 package es.udc.siteapp.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,22 +28,29 @@ public class User extends AuditModel {
 	private Long userId;
 	private String name;
 	private String surname;
-
 	@Column(unique = true)
 	private String nickname;
 	private String email;
 	private String password;
+	@Column(name = "type")
+	private UserAuthority typeUserAuthority;
+	@Column(nullable = false)
+	private boolean admin;
+	@Column(nullable = false)
+	private boolean active;
 
-//	@Column(name = "type")
-//	private UserAuthority typeUserAuthority;
-
-	public User(String name, String surname, String nickname, String email, String password) {
+	public User(String name, String surname, String nickname, String email, String password,
+			UserAuthority typeUserAuthority, boolean admin) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
+		this.typeUserAuthority = typeUserAuthority;
+		this.admin = admin;
+		this.active = true;
+		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import es.udc.siteapp.model.User;
+import es.udc.siteapp.model.UserAuthority;
 import es.udc.siteapp.repository.UserRepository;
 
 @SpringBootTest
@@ -21,7 +22,8 @@ class SiteappApplicationTests {
 
 	@Test
 	public void createUserTest() {
-		User user = new User("Junior", "Paradelo", "jparadelo", "jparadelo@gmail.com", bcrypt.encode("1234"));
+		User user = new User("Admin", "Admin", "admin", "admin@gmail.com", bcrypt.encode("admin"),
+				UserAuthority.ROLE_ADMIN, true);
 		User returnUser = userDAO.save(user);
 		assertTrue(returnUser.getPassword().equalsIgnoreCase(user.getPassword()));
 	}
