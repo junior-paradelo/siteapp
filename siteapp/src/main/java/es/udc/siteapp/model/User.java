@@ -13,24 +13,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User extends AuditModel {
 
 	@Id
-    @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq_gen")		
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq_gen")
 	@SequenceGenerator(name = "users_seq_gen", sequenceName = "users_id_seq")
 	private Long userId;
 	private String name;
 	private String surname;
+
+	@Column(unique = true)
 	private String nickname;
 	private String email;
 	private String password;
-	
+
 //	@Column(name = "type")
 //	private UserAuthority typeUserAuthority;
-	
+
 	public User(String name, String surname, String nickname, String email, String password) {
 		super();
 		this.name = name;
@@ -39,5 +43,5 @@ public class User extends AuditModel {
 		this.email = email;
 		this.password = password;
 	}
-	
+
 }

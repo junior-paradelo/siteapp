@@ -41,7 +41,7 @@ public class UserService {
 	}
 
 	public UserDTO getUserByName(String name) {
-		User user = userDAO.findUserByName(name);
+		User user = userDAO.findByName(name);
 		if (user == null) {
 			throw new ResourceNotFoundException("User not found with name: " + name);
 		}
