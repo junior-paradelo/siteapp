@@ -1,13 +1,10 @@
 package es.udc.siteapp.controller;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.siteapp.model.User;
-import es.udc.siteapp.repository.UserRepository;
+import es.udc.siteapp.service.UserService;
 import es.udc.siteapp.service.dto.UserDTO;
 
 @RestController
@@ -26,60 +23,38 @@ import es.udc.siteapp.service.dto.UserDTO;
 public class UserController {
 
 	@Autowired
-	UserRepository userDAO;
+	UserService userService;
 
 	@GetMapping("users")
-	public ResponseEntity<List<UserDTO>> findAllUsers() {
-		List<User> findAll = this.userDAO.findAll();
-		List<UserDTO> userDtoList = new LinkedList<>();
-		for (int i = 0; i < findAll.size(); i++) {
-			User user = findAll.get(i);
-			UserDTO userDTO = new UserDTO(user);
-			userDtoList.add(userDTO);
-		}
-		return ResponseEntity.ok(userDtoList);
+	public List<UserDTO> findAllUsers() {
+		return userService.findAll();
 	}
 
 	@GetMapping("users/{id}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable(value = "id") Long id) {
-		Optional<User> optionalUser = userDAO.findById(id);
-		if (optionalUser.isPresent()) {
-			User user = optionalUser.get();
-			return ResponseEntity.ok(new UserDTO(user));
-		} else {
-			// Exception with error
-			return ResponseEntity.noContent().build();
-		}
+	public UserDTO getUserById(@PathVariable(value = "id") Long id) {
+		return userService.getUserById(id);
+	}
+
+	@GetMapping("users/name={name}")
+	public UserDTO getUserByName(@PathVariable(value = "name") String name) {
+		return userService.getUserByName(name);
 	}
 
 	@PostMapping("users")
-	public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-		UserDTO userDTO = new UserDTO(userDAO.save(user));
-		return ResponseEntity.ok(userDTO);
+	public UserDTO createUser(@RequestBody UserDTO userDto) {
+		User registerUser = userService.registerUser(userDto.getName(), userDto.getSurname(), userDto.getNickname(),
+				userDto.getEmail(), userDto.getPassword());
+		return new UserDTO(registerUser);
 	}
 
 	@PutMapping("users/{id}")
-	public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDto) {
-		Optional<User> userOptional = userDAO.findById(id);
-		if (userOptional.isPresent()) {
-			User user = userDAO.getOne(id);
-			user.setName(userDto.getName());
-			user.setNickname(userDto.getNickname());
-			user.setSurname(userDto.getSurname());
-			userDAO.save(user);
-			return ResponseEntity.ok(userDto);
-		} else {
-			// Exception with error
-			return ResponseEntity.noContent().build();
-		}
+	public UserDTO updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDto) {
+		return userService.updateUser(userDto);
 	}
 
 	@DeleteMapping(value = "users/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long id) {
-		Optional<User> userOptional = userDAO.findById(id);
-		if (userOptional.isPresent()) {
-			userDAO.delete(userOptional.get());
-		}
+		userService.deleteById(id);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;

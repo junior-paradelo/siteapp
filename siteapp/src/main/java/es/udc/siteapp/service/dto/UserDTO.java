@@ -15,6 +15,7 @@ public class UserDTO {
 	private String surname;
 	private String nickname;
 	private String email;
+	private String password;
 
 	public UserDTO(User user) {
 		id = user.getUserId();
@@ -22,5 +23,6 @@ public class UserDTO {
 		surname = user.getSurname();
 		nickname = user.getNickname();
 		email = user.getEmail();
+		password = user.getPassword();
 	}
 }

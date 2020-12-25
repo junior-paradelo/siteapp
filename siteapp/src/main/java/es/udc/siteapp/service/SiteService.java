@@ -2,14 +2,16 @@ package es.udc.siteapp.service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.repository.SiteRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
 
+@Service
 public class SiteService {
 
 	@Autowired
@@ -27,43 +29,41 @@ public class SiteService {
 	}
 
 	public SiteDTO getSiteById(Long id) {
-		SiteDTO siteDto = null;
-		Optional<Site> optionalSite = siteDAO.findById(id);
-		if (optionalSite.isPresent()) {
-			Site site = optionalSite.get();
-			siteDto = new SiteDTO(site);
-		}
-		return siteDto;
+		Site site = siteDAO.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + id));
+		return new SiteDTO(site);
 	}
 
 	public Site getCompleteSiteById(Long id) {
-		return siteDAO.findById(id).orElse(null);
+		return siteDAO.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Complete site not found with id: " + id));
 	}
 
 	public SiteDTO getSiteByName(String name) {
 		Site site = siteDAO.findSiteByName(name);
+		if (site == null) {
+			throw new ResourceNotFoundException("Site not found with name: " + name);
+		}
 		return new SiteDTO(site);
 	}
 
-	public void registerSite(Site site) {
-		siteDAO.save(site);
+	public Site registerSite(String name, String province, String townHall) {
+		Site site = new Site(name, province, townHall);
+		return siteDAO.save(site);
+	}
+
+	public SiteDTO updateSite(SiteDTO siteDto) {
+		Site site = siteDAO.findById(siteDto.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + siteDto.getId()));
+		site.setName(siteDto.getName());
+		site.setProvince(siteDto.getProvince());
+		site.setTownHall(siteDto.getTownHall());
+		Site siteSave = siteDAO.save(site);
+		return new SiteDTO(siteSave);
 	}
 
 	public void deleteSiteById(Long id) {
 		siteDAO.deleteById(id);
 	}
 
-	public SiteDTO updateSite(SiteDTO siteDto) {
-		SiteDTO siteDtoResponse = null;
-		Optional<Site> optionalSite = siteDAO.findById(siteDto.getId());
-		if (optionalSite.isPresent()) {
-			Site site = optionalSite.get();
-			site.setName(siteDto.getName());
-			site.setProvince(siteDto.getProvince());
-			site.setTownHall(siteDto.getTownHall());
-			Site siteSave = siteDAO.save(site);
-			siteDtoResponse = new SiteDTO(siteSave);
-		}
-		return siteDtoResponse;
-	}
 }
