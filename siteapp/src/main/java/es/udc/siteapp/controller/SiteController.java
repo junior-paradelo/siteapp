@@ -19,7 +19,7 @@ import es.udc.siteapp.service.SiteService;
 import es.udc.siteapp.service.dto.SiteDTO;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/")
 public class SiteController {
 
 	@Autowired

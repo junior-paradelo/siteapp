@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/siteapp
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+jwt:
+  header: Authorization
+  secret: tasksSecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+      

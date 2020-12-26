@@ -26,7 +26,7 @@ public class Site extends AuditModel {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "site_seq_gen")
-	@SequenceGenerator(name = "site_seq_gen", sequenceName = "site_id_seq")
+	@SequenceGenerator(name = "site_seq_gen", sequenceName = "site_id_seq", allocationSize = 1)
 	private Long siteId;
 	private String name;
 	private String province;

@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.siteapp.model.User;
+import es.udc.siteapp.security.JwtTokenUtil;
 import es.udc.siteapp.security.JwtUser;
 import es.udc.siteapp.service.UserService;
 
 @RestController
 @RequestMapping("/api/")
 public class UserController {
+
+	@Value("${jwt.header}")
+	private String tokenHeader;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	@Autowired
 	UserService userService;
@@ -57,5 +71,13 @@ public class UserController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
+	}
+
+	@GetMapping(value = "user")
+	public JwtUser getAuthenticatedUser(HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+		return user;
 	}
 }
