@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,6 @@ public class JwtTokenUtil implements Serializable {
 	static final String CLAIM_KEY_AUDIENCE = "audience";
 	static final String CLAIM_KEY_CREATED = "created";
 
-	private static final String AUDIENCE_UNKNOWN = "unknown";
 	private static final String AUDIENCE_WEB = "web";
 	private static final String AUDIENCE_MOBILE = "mobile";
 	private static final String AUDIENCE_TABLET = "tablet";
@@ -101,27 +99,15 @@ public class JwtTokenUtil implements Serializable {
 		return (lastPasswordReset != null && created.before(lastPasswordReset));
 	}
 
-	private String generateAudience(Device device) {
-		String audience = AUDIENCE_UNKNOWN;
-		if (device.isNormal()) {
-			audience = AUDIENCE_WEB;
-		} else if (device.isTablet()) {
-			audience = AUDIENCE_TABLET;
-		} else if (device.isMobile()) {
-			audience = AUDIENCE_MOBILE;
-		}
-		return audience;
-	}
-
 	private Boolean ignoreTokenExpiration(String token) {
 		String audience = getAudienceFromToken(token);
 		return (AUDIENCE_TABLET.equals(audience) || AUDIENCE_MOBILE.equals(audience));
 	}
 
-	public String generateToken(UserDetails userDetails, Device device) {
+	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-		claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device));
+		claims.put(CLAIM_KEY_AUDIENCE, AUDIENCE_WEB);
 		claims.put(CLAIM_KEY_CREATED, new Date());
 		return generateToken(claims);
 	}
