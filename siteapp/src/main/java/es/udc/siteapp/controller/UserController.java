@@ -15,41 +15,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.siteapp.model.User;
+import es.udc.siteapp.security.JwtUser;
 import es.udc.siteapp.service.UserService;
-import es.udc.siteapp.service.dto.UserDTO;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
 	@GetMapping("users")
-	public List<UserDTO> findAllUsers() {
+	public List<JwtUser> findAllUsers() {
 		return userService.findAll();
 	}
 
 	@GetMapping("users/{id}")
-	public UserDTO getUserById(@PathVariable(value = "id") Long id) {
+	public JwtUser getUserById(@PathVariable(value = "id") Long id) {
 		return userService.getUserById(id);
 	}
 
 	@GetMapping("users/name={name}")
-	public UserDTO getUserByName(@PathVariable(value = "name") String name) {
-		return userService.getUserByName(name);
+	public JwtUser getUserByName(@PathVariable(value = "name") String name) {
+		return userService.getUserByUsername(name);
 	}
 
 	@PostMapping("users")
-	public UserDTO createUser(@RequestBody UserDTO userDto) {
-		User registerUser = userService.registerUser(userDto.getName(), userDto.getSurname(), userDto.getNickname(),
-				userDto.getEmail(), userDto.getPassword());
-		return new UserDTO(registerUser);
+	public JwtUser createUser(@RequestBody JwtUser jwtUser) {
+		User registerUser = userService.registerUser(jwtUser);
+		return new JwtUser(registerUser);
 	}
 
 	@PutMapping("users/{id}")
-	public UserDTO updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDto) {
-		return userService.updateUser(userDto);
+	public JwtUser updateUser(@PathVariable(value = "id") Long id, @RequestBody JwtUser jwtUser) {
+		return userService.updateUser(jwtUser);
 	}
 
 	@DeleteMapping(value = "users/{id}")
