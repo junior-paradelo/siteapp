@@ -16,6 +16,8 @@ public class SiteDTO {
 	private String province;
 	private String townHall;
 	private Category category;
+	private float latitude;
+	private float longitude;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -23,5 +25,7 @@ public class SiteDTO {
 		province = site.getProvince();
 		townHall = site.getTownHall();
 		category = site.getCategory();
+		latitude = site.getLatitude();
+		longitude = site.getLongitude();
 	}
 }

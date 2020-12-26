@@ -16,10 +16,10 @@ import es.udc.siteapp.service.dto.SiteDTO;
 public class SiteService {
 
 	@Autowired
-	SiteRepository siteDAO;
+	SiteRepository siteRepository;
 
 	public List<SiteDTO> findAll() {
-		List<Site> findAll = siteDAO.findAll();
+		List<Site> findAll = siteRepository.findAll();
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findAll.size(); i++) {
 			Site site = findAll.get(i);
@@ -30,41 +30,42 @@ public class SiteService {
 	}
 
 	public SiteDTO getSiteById(Long id) {
-		Site site = siteDAO.findById(id)
+		Site site = siteRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + id));
 		return new SiteDTO(site);
 	}
 
 	public Site getCompleteSiteById(Long id) {
-		return siteDAO.findById(id)
+		return siteRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Complete site not found with id: " + id));
 	}
 
 	public SiteDTO getSiteByName(String name) {
-		Site site = siteDAO.findSiteByName(name);
+		Site site = siteRepository.findSiteByName(name);
 		if (site == null) {
 			throw new ResourceNotFoundException("Site not found with name: " + name);
 		}
 		return new SiteDTO(site);
 	}
 
-	public Site registerSite(String name, String province, String townHall, Category category) {
-		Site site = new Site(name, province, townHall, category);
-		return siteDAO.save(site);
+	public Site registerSite(String name, String province, String townHall, Category category, float latitude,
+			float longitude) {
+		Site site = new Site(name, province, townHall, category, latitude, longitude);
+		return siteRepository.save(site);
 	}
 
 	public SiteDTO updateSite(SiteDTO siteDto) {
-		Site site = siteDAO.findById(siteDto.getId())
+		Site site = siteRepository.findById(siteDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + siteDto.getId()));
 		site.setName(siteDto.getName());
 		site.setProvince(siteDto.getProvince());
 		site.setTownHall(siteDto.getTownHall());
-		Site siteSave = siteDAO.save(site);
+		Site siteSave = siteRepository.save(site);
 		return new SiteDTO(siteSave);
 	}
 
 	public void deleteSiteById(Long id) {
-		siteDAO.deleteById(id);
+		siteRepository.deleteById(id);
 	}
 
 }

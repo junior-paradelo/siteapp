@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,22 +30,36 @@ public class Site extends AuditModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "site_seq_gen")
 	@SequenceGenerator(name = "site_seq_gen", sequenceName = "site_id_seq", allocationSize = 1)
 	private Long siteId;
-	private String name;
-	private String province;
-	private String townHall;
-	private Category category;
-	@Column(nullable = false)
-	private boolean active;
-//	private Point coordenates;
 
-	public Site(String name, String province, String townHall, Category category) {
+	@Column(length = 100)
+	private String name;
+
+	@Column(length = 100)
+	private String province;
+
+	@Column(length = 100)
+	private String townHall;
+
+	@Column(nullable = false)
+	private boolean enabled;
+
+	@Column(length = 50, nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Category category;
+
+	private float latitude;
+	private float longitude;
+
+	public Site(String name, String province, String townHall, Category category, float latitude, float longitude) {
 		super();
 		this.name = name;
 		this.province = province;
 		this.townHall = townHall;
 		this.category = category;
-		this.active = true;
+		this.enabled = true;
 		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 }

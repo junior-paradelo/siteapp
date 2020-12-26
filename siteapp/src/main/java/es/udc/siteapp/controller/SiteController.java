@@ -43,7 +43,7 @@ public class SiteController {
 	@PostMapping("sites")
 	public SiteDTO createSite(@RequestBody SiteDTO site) {
 		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall(),
-				site.getCategory());
+				site.getCategory(), site.getLatitude(), site.getLongitude());
 		return new SiteDTO(registerSite);
 	}
 
