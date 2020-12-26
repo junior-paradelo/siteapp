@@ -10,6 +10,7 @@ import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.User;
 import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.security.JwtUser;
+import es.udc.siteapp.security.JwtUserFactory;
 import es.udc.siteapp.service.dto.SiteDTO;
 
 @Service
@@ -23,7 +24,7 @@ public class UserService {
 		List<JwtUser> jwtUserList = new LinkedList<>();
 		for (int i = 0; i < findAll.size(); i++) {
 			User user = findAll.get(i);
-			JwtUser jwtUser = new JwtUser(user);
+			JwtUser jwtUser = JwtUserFactory.create(user);
 			jwtUserList.add(jwtUser);
 		}
 		return jwtUserList;
@@ -37,7 +38,7 @@ public class UserService {
 	public JwtUser getUserById(Long id) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-		return new JwtUser(user);
+		return JwtUserFactory.create(user);
 	}
 
 	public JwtUser getUserByUsername(String name) {
@@ -45,7 +46,7 @@ public class UserService {
 		if (user == null) {
 			throw new ResourceNotFoundException("User not found with name: " + name);
 		}
-		return new JwtUser(user);
+		return JwtUserFactory.create(user);
 	}
 
 	public User getCompleteUserById(Long id) {
@@ -62,7 +63,7 @@ public class UserService {
 		user.setLastname(jwtUser.getLastname());
 		user.setEmail(jwtUser.getEmail());
 		User userSave = userRepository.save(user);
-		jwtUserResponse = new JwtUser(userSave);
+		jwtUserResponse = JwtUserFactory.create(user);
 
 		return jwtUserResponse;
 	}

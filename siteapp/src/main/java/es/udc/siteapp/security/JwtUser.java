@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import es.udc.siteapp.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -44,19 +43,6 @@ public class JwtUser implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
-	}
-
-	public JwtUser(User user) {
-		super();
-		this.id = user.getUserId();
-		this.username = user.getUsername();
-		this.firstname = user.getFirstname();
-		this.lastname = user.getLastname();
-		this.password = user.getPassword();
-		this.email = user.getEmail();
-		this.authorities = (Collection<? extends GrantedAuthority>) user.getAuthorities();
-		this.enabled = user.getEnabled();
-		this.lastPasswordResetDate = user.getLastPasswordResetDate();
 	}
 
 }

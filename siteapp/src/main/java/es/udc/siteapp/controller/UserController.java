@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.udc.siteapp.model.User;
 import es.udc.siteapp.security.JwtTokenUtil;
 import es.udc.siteapp.security.JwtUser;
+import es.udc.siteapp.security.JwtUserFactory;
 import es.udc.siteapp.service.UserService;
 
 @RestController
@@ -57,7 +58,7 @@ public class UserController {
 	@PostMapping("users")
 	public JwtUser createUser(@RequestBody JwtUser jwtUser) {
 		User registerUser = userService.registerUser(jwtUser);
-		return new JwtUser(registerUser);
+		return JwtUserFactory.create(registerUser);
 	}
 
 	@PutMapping("users/{id}")
