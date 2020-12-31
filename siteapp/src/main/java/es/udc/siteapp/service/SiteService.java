@@ -49,8 +49,8 @@ public class SiteService {
 	}
 
 	public Site registerSite(String name, String province, String townHall, Category category, float latitude,
-			float longitude) {
-		Site site = new Site(name, province, townHall, category, latitude, longitude);
+			float longitude, String description) {
+		Site site = new Site(name, province, townHall, category, latitude, longitude, description);
 		return siteRepository.save(site);
 	}
 

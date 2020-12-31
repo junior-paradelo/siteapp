@@ -50,7 +50,11 @@ public class Site extends AuditModel {
 	private float latitude;
 	private float longitude;
 
-	public Site(String name, String province, String townHall, Category category, float latitude, float longitude) {
+	@Column(length = 250)
+	private String description;
+
+	public Site(String name, String province, String townHall, Category category, float latitude, float longitude,
+			String description) {
 		super();
 		this.name = name;
 		this.province = province;
@@ -60,6 +64,7 @@ public class Site extends AuditModel {
 		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.description = description;
 	}
 
 }

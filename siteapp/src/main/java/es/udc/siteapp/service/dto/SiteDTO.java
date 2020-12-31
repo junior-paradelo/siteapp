@@ -18,6 +18,7 @@ public class SiteDTO {
 	private Category category;
 	private float latitude;
 	private float longitude;
+	private String description;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -27,5 +28,6 @@ public class SiteDTO {
 		category = site.getCategory();
 		latitude = site.getLatitude();
 		longitude = site.getLongitude();
+		description = site.getDescription();
 	}
 }
