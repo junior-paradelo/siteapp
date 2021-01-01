@@ -1,10 +1,15 @@
 package es.udc.siteapp;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Date;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import es.udc.siteapp.model.User;
 import es.udc.siteapp.repository.UserRepository;
 
 @SpringBootTest
@@ -18,7 +23,10 @@ class SiteappApplicationTests {
 
 	@Test
 	public void createUserTest() {
-
+		User user = new User("username", "password", "firstname", "lastname", "email", new Date(), null);
+		User userSaved = userDAO.save(user);
+		User userFromDb = userDAO.findById(userSaved.getUserId()).get();
+		assertThat(userSaved.getUsername()).isEqualTo(userFromDb.getUsername());
 	}
 
 }

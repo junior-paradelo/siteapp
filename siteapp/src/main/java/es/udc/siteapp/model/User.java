@@ -76,4 +76,17 @@ public class User extends AuditModel {
 //		authorities = jwtUser.getAuthorities();
 	}
 
+	public User(String username, String password, String firstname, String lastname, String email,
+			Date lastPasswordResetDate, List<Authority> authorities) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.enabled = true;
+		this.lastPasswordResetDate = lastPasswordResetDate;
+		this.authorities = authorities;
+	}
+
 }
