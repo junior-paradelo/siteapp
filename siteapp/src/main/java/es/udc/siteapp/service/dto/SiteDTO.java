@@ -1,5 +1,7 @@
 package es.udc.siteapp.service.dto;
 
+import java.sql.Timestamp;
+
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ public class SiteDTO {
 	private float latitude;
 	private float longitude;
 	private String description;
+	private Timestamp createdAt;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -29,5 +32,6 @@ public class SiteDTO {
 		latitude = site.getLatitude();
 		longitude = site.getLongitude();
 		description = site.getDescription();
+		createdAt = site.getCreatedAt();
 	}
 }

@@ -29,6 +29,17 @@ public class SiteService {
 		return siteDtoList;
 	}
 
+	public List<SiteDTO> findSiteByKeyword(String keyword) {
+		List<Site> findSiteByKeyword = siteRepository.findSiteByKeyword(keyword);
+		List<SiteDTO> siteDtoList = new LinkedList<>();
+		for (int i = 0; i < findSiteByKeyword.size(); i++) {
+			Site site = findSiteByKeyword.get(i);
+			SiteDTO siteDTO = new SiteDTO(site);
+			siteDtoList.add(siteDTO);
+		}
+		return siteDtoList;
+	}
+
 	public SiteDTO getSiteById(Long id) {
 		Site site = siteRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + id));
