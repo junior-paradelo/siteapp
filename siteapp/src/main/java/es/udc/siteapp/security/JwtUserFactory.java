@@ -1,5 +1,6 @@
 package es.udc.siteapp.security;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,14 +16,15 @@ public class JwtUserFactory {
 	}
 
 	public static JwtUser create(User user) {
-
 		return new JwtUser(user.getUserId(), user.getUsername(), user.getFirstname(), user.getLastname(),
-				user.getPassword(), user.getEmail(), mapToGrantedAuthorities(user.getAuthorities()), user.getEnabled(),
+				user.getPassword(), user.getEmail(), mapToGrantedAuthorities(user.getAuthority()), user.getEnabled(),
 				user.getLastPasswordResetDate());
 	}
 
-	private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
-		return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
+	private static List<GrantedAuthority> mapToGrantedAuthorities(Authority authority) {
+		List<Authority> list = new LinkedList<>();
+		list.add(authority);
+		return list.stream().map(authoritie -> new SimpleGrantedAuthority(authoritie.getName().name()))
 				.collect(Collectors.toList());
 	}
 }

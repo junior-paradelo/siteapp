@@ -30,6 +30,11 @@ public class SiteController {
 		return siteService.findAll();
 	}
 
+	@GetMapping("sites/keyword={keyword}")
+	public List<SiteDTO> findSiteByKeyword(@PathVariable(value = "keyword") String keyword) {
+		return siteService.findSiteByKeyword(keyword);
+	}
+
 	@GetMapping("sites/{id}")
 	public SiteDTO getSiteById(@PathVariable(value = "id") Long id) {
 		return siteService.getSiteById(id);

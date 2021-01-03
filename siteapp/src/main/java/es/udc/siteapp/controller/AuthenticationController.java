@@ -68,4 +68,12 @@ public class AuthenticationController {
 			return ResponseEntity.badRequest().body(null);
 		}
 	}
+
+	@GetMapping(value = "user")
+	public JwtUser getAuthenticatedUser(HttpServletRequest request) {
+		String token = request.getHeader(tokenHeader);
+		String username = jwtTokenUtil.getUsernameFromToken(token);
+		JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+		return user;
+	}
 }

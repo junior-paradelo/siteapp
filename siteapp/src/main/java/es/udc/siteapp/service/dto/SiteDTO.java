@@ -1,6 +1,6 @@
 package es.udc.siteapp.service.dto;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
@@ -21,7 +21,7 @@ public class SiteDTO {
 	private float latitude;
 	private float longitude;
 	private String description;
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
