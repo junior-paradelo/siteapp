@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.udc.siteapp.model.Authority;
 import es.udc.siteapp.model.User;
 import es.udc.siteapp.security.JwtUser;
 import es.udc.siteapp.security.JwtUserFactory;
@@ -44,6 +45,13 @@ public class UserController {
 		return JwtUserFactory.create(registerUser);
 	}
 
+	@PostMapping("users/admin")
+	public JwtUser createUserAdmin(@RequestBody UserDTO userDto) {
+		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
+				userDto.getFirstname(), userDto.getLastname(), Boolean.TRUE);
+		return JwtUserFactory.create(registerUser);
+	}
+
 	@PutMapping("users/update/{id}")
 	public UserDTO updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDto) {
 		return userService.updateUser(userDto);
@@ -55,6 +63,11 @@ public class UserController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
+	}
+
+	@GetMapping("/users/authorities")
+	public List<Authority> findAllAuthorities() {
+		return userService.findAllAuthorities();
 	}
 
 }

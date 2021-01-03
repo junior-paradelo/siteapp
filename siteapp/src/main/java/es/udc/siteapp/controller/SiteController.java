@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.service.SiteService;
 import es.udc.siteapp.service.dto.SiteDTO;
@@ -63,6 +64,11 @@ public class SiteController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
+	}
+
+	@GetMapping("sites/categories")
+	public List<Category> findAllCategories() {
+		return siteService.findAllCategories();
 	}
 
 }

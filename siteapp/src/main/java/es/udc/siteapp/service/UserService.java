@@ -94,4 +94,7 @@ public class UserService {
 		return null;
 	}
 
+	public List<Authority> findAllAuthorities() {
+		return authorityRepository.findAll();
+	}
 }

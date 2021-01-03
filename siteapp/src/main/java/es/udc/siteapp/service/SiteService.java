@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
+import es.udc.siteapp.repository.CategoryRepository;
 import es.udc.siteapp.repository.SiteRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
 
@@ -17,6 +18,9 @@ public class SiteService {
 
 	@Autowired
 	SiteRepository siteRepository;
+
+	@Autowired
+	CategoryRepository categoryRepository;
 
 	public List<SiteDTO> findAll() {
 		List<Site> findAll = siteRepository.findAll();
@@ -77,6 +81,10 @@ public class SiteService {
 
 	public void deleteSiteById(Long id) {
 		siteRepository.deleteById(id);
+	}
+
+	public List<Category> findAllCategories() {
+		return categoryRepository.findAll();
 	}
 
 }
