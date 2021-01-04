@@ -1,5 +1,5 @@
 server: 
-   port: 9090
+   port: 8080
 spring:
   datasource:
     password: 1234
@@ -7,7 +7,7 @@ spring:
     username: postgres
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

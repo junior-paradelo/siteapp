@@ -15,12 +15,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import es.udc.siteapp.service.dto.UserDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends AuditModel {
 

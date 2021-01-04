@@ -72,14 +72,23 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public UserDTO updateUser(UserDTO userDto) {
+	public UserDTO updateUser(Long id, UserDTO userDto) {
 		UserDTO userDtoResponse = null;
-		User user = userRepository.findById(userDto.getId())
+		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userDto.getId()));
 
-		user.setFirstname(userDto.getFirstname());
-		user.setLastname(userDto.getLastname());
-		user.setEmail(userDto.getEmail());
+		if (userDto.getFirstname() != null) {
+			user.setFirstname(userDto.getFirstname());
+		}
+		if (userDto.getLastname() != null) {
+			user.setLastname(userDto.getLastname());
+		}
+		if (userDto.getEmail() != null) {
+			user.setEmail(userDto.getEmail());
+		}
+		if (userDto.getEnabled() != null) {
+			user.setEnabled(userDto.getEnabled());
+		}
 		User userSave = userRepository.save(user);
 		userDtoResponse = new UserDTO(userSave);
 

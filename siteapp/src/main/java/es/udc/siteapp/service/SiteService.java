@@ -69,12 +69,30 @@ public class SiteService {
 		return siteRepository.save(site);
 	}
 
-	public SiteDTO updateSite(SiteDTO siteDto) {
-		Site site = siteRepository.findById(siteDto.getId())
+	public SiteDTO updateSite(Long id, SiteDTO siteDto) {
+		Site site = siteRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + siteDto.getId()));
-		site.setName(siteDto.getName());
-		site.setProvince(siteDto.getProvince());
-		site.setTownHall(siteDto.getTownHall());
+		if (siteDto.getName() != null) {
+			site.setName(siteDto.getName());
+		}
+		if (siteDto.getProvince() != null) {
+			site.setProvince(siteDto.getProvince());
+		}
+		if (siteDto.getTownHall() != null) {
+			site.setTownHall(siteDto.getTownHall());
+		}
+		if (siteDto.getCategory() != null) {
+			site.setCategory(siteDto.getCategory());
+		}
+		if (siteDto.getDescription() != null) {
+			site.setDescription(siteDto.getDescription());
+		}
+		if (siteDto.getLatitude() != 0) {
+			site.setLatitude(site.getLatitude());
+		}
+		if (siteDto.getLongitude() != 0) {
+			site.setLongitude(site.getLongitude());
+		}
 		Site siteSave = siteRepository.save(site);
 		return new SiteDTO(siteSave);
 	}

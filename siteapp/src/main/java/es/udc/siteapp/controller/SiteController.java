@@ -55,7 +55,7 @@ public class SiteController {
 
 	@PutMapping("sites/{id}")
 	public SiteDTO updateSite(@PathVariable(value = "id") Long id, @RequestBody SiteDTO siteDto) {
-		return siteService.updateSite(siteDto);
+		return siteService.updateSite(id, siteDto);
 	}
 
 	@DeleteMapping("sites/{id}")
