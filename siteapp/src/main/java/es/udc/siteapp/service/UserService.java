@@ -1,12 +1,16 @@
 package es.udc.siteapp.service;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Authority;
@@ -60,7 +64,7 @@ public class UserService {
 	}
 
 	public User registerUser(String username, String password, String email, String firstname, String lastname,
-			Boolean admin) {
+			Boolean admin, MultipartFile profileImage) {
 		Authority authority;
 		if (Boolean.TRUE.equals(admin)) {
 			authority = authorityRepository.findAuthorityByName(AuthorityName.ROLE_ADMIN);
@@ -70,6 +74,25 @@ public class UserService {
 		User user = new User(username, bcrypt.encode(password), firstname, lastname, email, new Date(), new Date(),
 				authority);
 		return userRepository.save(user);
+	}
+
+	public void uploadImage(Long id, MultipartFile file) {
+		Optional<User> optionalUser = userRepository.findById(id);
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			try {
+				user.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+			} catch (IOException e) {
+				throw new ResourceNotFoundException("Error to insert image");
+			}
+			userRepository.save(user);
+		}
+	}
+
+	public String getImage(Long id) {
+		User user = userRepository.getOne(id);
+		String image = user.getImage();
+		return image;
 	}
 
 	public UserDTO updateUser(Long id, UserDTO userDto) {

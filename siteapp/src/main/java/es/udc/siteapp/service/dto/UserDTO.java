@@ -17,6 +17,7 @@ public class UserDTO {
 	private String password;
 	private String email;
 	private Boolean enabled;
+	private String image;
 
 	public UserDTO(User user) {
 		this.id = user.getUserId();
@@ -25,5 +26,6 @@ public class UserDTO {
 		this.lastname = user.getLastname();
 		this.email = user.getEmail();
 		this.enabled = user.getEnabled();
+		this.image = user.getImage();
 	}
 }

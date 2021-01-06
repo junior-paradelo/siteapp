@@ -69,7 +69,7 @@ public class AuthenticationController {
 		}
 	}
 
-	@GetMapping(value = "user")
+	@GetMapping(value = "${jwt.route.authentication.info}")
 	public JwtUser getAuthenticatedUser(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);

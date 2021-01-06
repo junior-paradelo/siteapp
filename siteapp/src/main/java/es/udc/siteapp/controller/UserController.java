@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.model.Authority;
 import es.udc.siteapp.model.User;
+import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.security.JwtUser;
 import es.udc.siteapp.security.JwtUserFactory;
 import es.udc.siteapp.service.UserService;
@@ -27,6 +30,8 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserRepository ur;
 
 	@GetMapping("users")
 	public List<UserDTO> findAllUsers() {
@@ -41,14 +46,24 @@ public class UserController {
 	@PostMapping("users")
 	public JwtUser createUser(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
-				userDto.getFirstname(), userDto.getLastname(), Boolean.FALSE);
+				userDto.getFirstname(), userDto.getLastname(), Boolean.FALSE, null);
 		return JwtUserFactory.create(registerUser);
+	}
+
+	@PutMapping("users/upload/{id}")
+	public void uploadImage(@PathVariable(value = "id") Long id, @RequestParam("image") MultipartFile file) {
+		userService.uploadImage(id, file);
+	}
+
+	@GetMapping("users/image/{id}")
+	public String getImage(@PathVariable(value = "id") Long id) {
+		return userService.getImage(id);
 	}
 
 	@PostMapping("users/admin")
 	public JwtUser createUserAdmin(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
-				userDto.getFirstname(), userDto.getLastname(), Boolean.TRUE);
+				userDto.getFirstname(), userDto.getLastname(), Boolean.TRUE, null);
 		return JwtUserFactory.create(registerUser);
 	}
 

@@ -60,6 +60,10 @@ public class User extends AuditModel {
 	@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")
 	private Authority authority;
 
+	// Base64.getEncoder().encodeToString(file.getBytes())
+	@Column(columnDefinition = "text")
+	private String image;
+
 	public User(UserDTO userDto) {
 		this.email = userDto.getEmail();
 		this.username = userDto.getUsername();
@@ -80,6 +84,7 @@ public class User extends AuditModel {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 		this.setCreatedAt(createdAt);
 		this.authority = authority;
+
 	}
 
 }
