@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,13 +101,13 @@ public class UserService {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userDto.getId()));
 
-		if (userDto.getFirstname() != null) {
+		if (StringUtils.isNotBlank(userDto.getFirstname())) {
 			user.setFirstname(userDto.getFirstname());
 		}
-		if (userDto.getLastname() != null) {
+		if (StringUtils.isNotBlank(userDto.getLastname())) {
 			user.setLastname(userDto.getLastname());
 		}
-		if (userDto.getEmail() != null) {
+		if (StringUtils.isNotBlank(userDto.getEmail())) {
 			user.setEmail(userDto.getEmail());
 		}
 		if (userDto.getEnabled() != null) {
