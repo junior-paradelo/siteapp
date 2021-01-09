@@ -2,13 +2,16 @@ package es.udc.siteapp.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -52,6 +55,10 @@ public class Site extends AuditModel {
 
 	@Column(length = 250)
 	private String description;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "SITEDETAILS_ID", referencedColumnName = "ID")
+	private SiteDetails siteDetails;
 
 	public Site(String name, String province, String townHall, Category category, float latitude, float longitude,
 			String description) {

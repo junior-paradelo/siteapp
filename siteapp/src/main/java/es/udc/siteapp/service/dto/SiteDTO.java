@@ -4,6 +4,7 @@ import java.util.Date;
 
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
+import es.udc.siteapp.model.SiteDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class SiteDTO {
 	private float longitude;
 	private String description;
 	private Date createdAt;
+	private SiteDetails siteDetails;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -33,5 +35,6 @@ public class SiteDTO {
 		longitude = site.getLongitude();
 		description = site.getDescription();
 		createdAt = site.getCreatedAt();
+		siteDetails = site.getSiteDetails();
 	}
 }
