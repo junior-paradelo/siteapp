@@ -6,7 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -14,31 +16,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.udc.siteapp.exception.StorageException;
+import es.udc.siteapp.model.Site;
+import es.udc.siteapp.model.SiteImage;
+import es.udc.siteapp.repository.SiteImageRepository;
+import es.udc.siteapp.repository.SiteRepository;
+
 @Service
 public class FileStorageService {
 
 	private Path fileStoragePath;
 	private String fileStorageLocation;
 
-	public FileStorageService(@Value("${file.storage.location:temp}") String fileStorageLocation) {
+	@Autowired
+	private SiteImageRepository siteImageRepository;
 
+	@Autowired
+	private SiteRepository siteRepository;
+
+	public FileStorageService(@Value("${file.storage.location:temp}") String fileStorageLocation) {
 		this.fileStorageLocation = fileStorageLocation;
 		fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
-
 		try {
 			Files.createDirectories(fileStoragePath);
 		} catch (IOException e) {
-			throw new RuntimeException("Issue in creating file directory");
+			throw new StorageException("Issue in creating file directory");
 		}
 	}
 
-	public String storeFile(MultipartFile file) {
-		String filename = StringUtils.cleanPath(file.getOriginalFilename());
-		Path filePath = Paths.get(fileStoragePath + "\\" + filename);
-		try {
-			Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			throw new RuntimeException("Issue in storing the file");
+	public String storeFile(Long siteId, MultipartFile file) {
+		Optional<Site> result = siteRepository.findById(siteId);
+		String filename = null;
+		if (result.isPresent()) {
+			filename = StringUtils.cleanPath(file.getOriginalFilename());
+			Path filePath = Paths.get(fileStoragePath + "\\" + filename);
+			try {
+				Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new StorageException("Issue in storing the file");
+			}
+			SiteImage siteImage = new SiteImage(filename, result.get());
+			siteImageRepository.save(siteImage);
 		}
 		return filename;
 	}
@@ -49,7 +67,7 @@ public class FileStorageService {
 		try {
 			resource = new UrlResource(path.toUri());
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("Issue in reading the file", e);
+			throw new StorageException("Issue in reading the file: " + e);
 		}
 		return resource;
 	}

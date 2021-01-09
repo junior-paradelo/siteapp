@@ -29,11 +29,4 @@ public class SiteDetails {
 	@Column(columnDefinition = "TEXT")
 	private String comment;
 
-	public SiteDetails(String header, String resume, String comment) {
-		super();
-		this.header = header;
-		this.resume = resume;
-		this.comment = comment;
-	}
-
 }

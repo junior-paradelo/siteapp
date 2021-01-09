@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.locationtech.jts.geom.Point;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,9 +52,6 @@ public class Site extends AuditModel {
 	@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
 	private Category category;
 
-	private float latitude;
-	private float longitude;
-
 	@Column(length = 250)
 	private String description;
 
@@ -60,7 +59,10 @@ public class Site extends AuditModel {
 	@JoinColumn(name = "SITEDETAILS_ID", referencedColumnName = "ID")
 	private SiteDetails siteDetails;
 
-	public Site(String name, String province, String townHall, Category category, float latitude, float longitude,
+	@Column(columnDefinition = "geometry(Point,4326)")
+	public Point coordinates;
+
+	public Site(String name, String province, String townHall, Category category, Point coordinates,
 			String description) {
 		super();
 		this.name = name;
@@ -69,9 +71,8 @@ public class Site extends AuditModel {
 		this.category = category;
 		this.enabled = true;
 		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		this.latitude = latitude;
-		this.longitude = longitude;
 		this.description = description;
+		this.coordinates = coordinates;
 	}
 
 }

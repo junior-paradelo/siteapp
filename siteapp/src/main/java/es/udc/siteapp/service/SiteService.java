@@ -3,6 +3,8 @@ package es.udc.siteapp.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,9 +65,11 @@ public class SiteService {
 		return new SiteDTO(site);
 	}
 
-	public Site registerSite(String name, String province, String townHall, Category category, float latitude,
-			float longitude, String description) {
-		Site site = new Site(name, province, townHall, category, latitude, longitude, description);
+	public Site registerSite(String name, String province, String townHall, Category category, Double latitude,
+			Double longitude, String description) {
+		GeometryFactory gf = new GeometryFactory();
+		Site site = new Site(name, province, townHall, category, gf.createPoint(new Coordinate(latitude, longitude)),
+				description);
 		return siteRepository.save(site);
 	}
 
@@ -87,12 +91,7 @@ public class SiteService {
 		if (siteDto.getDescription() != null) {
 			site.setDescription(siteDto.getDescription());
 		}
-		if (siteDto.getLatitude() != 0) {
-			site.setLatitude(site.getLatitude());
-		}
-		if (siteDto.getLongitude() != 0) {
-			site.setLongitude(site.getLongitude());
-		}
+
 		Site siteSave = siteRepository.save(site);
 		return new SiteDTO(siteSave);
 	}
