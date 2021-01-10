@@ -1,6 +1,7 @@
 package es.udc.siteapp.service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
@@ -126,5 +127,17 @@ public class UserService {
 
 	public List<Authority> findAllAuthorities() {
 		return authorityRepository.findAll();
+	}
+
+	public UserDTO changePassword(Long id, UserDTO userDto) {
+		User user = userRepository.getOne(id);
+		User userSave = null;
+		if (user.getUsername().equalsIgnoreCase(userDto.getUsername())
+				&& user.getEmail().equalsIgnoreCase(userDto.getEmail())) {
+			user.setPassword(bcrypt.encode(userDto.getPassword()));
+			user.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+			userSave = userRepository.save(user);
+		}
+		return new UserDTO(userSave);
 	}
 }
