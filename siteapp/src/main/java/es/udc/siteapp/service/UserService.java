@@ -2,7 +2,6 @@ package es.udc.siteapp.service;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -65,15 +64,14 @@ public class UserService {
 	}
 
 	public User registerUser(String username, String password, String email, String firstname, String lastname,
-			Boolean admin, MultipartFile profileImage) {
+			Boolean admin) {
 		Authority authority;
 		if (Boolean.TRUE.equals(admin)) {
 			authority = authorityRepository.findAuthorityByName(AuthorityName.ROLE_ADMIN);
 		} else {
 			authority = authorityRepository.findAuthorityByName(AuthorityName.ROLE_USER);
 		}
-		User user = new User(username, bcrypt.encode(password), firstname, lastname, email, new Date(), new Date(),
-				authority);
+		User user = new User(username, bcrypt.encode(password), firstname, lastname, email, authority, null);
 		return userRepository.save(user);
 	}
 
@@ -92,8 +90,7 @@ public class UserService {
 
 	public String getImage(Long id) {
 		User user = userRepository.getOne(id);
-		String image = user.getImage();
-		return image;
+		return user.getImage();
 	}
 
 	public UserDTO updateUser(Long id, UserDTO userDto) {

@@ -1,12 +1,16 @@
 package es.udc.siteapp.service;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Category;
@@ -66,11 +70,30 @@ public class SiteService {
 	}
 
 	public Site registerSite(String name, String province, String townHall, Category category, Double latitude,
-			Double longitude, String description) {
+			Double longitude, Double latitudePark, Double longitudePark, String description) {
 		GeometryFactory gf = new GeometryFactory();
-		Site site = new Site(name, province, townHall, category, gf.createPoint(new Coordinate(latitude, longitude)),
-				description);
+		Site site = new Site(name, province, townHall, category, description, null,
+				gf.createPoint(new Coordinate(latitude, longitude)),
+				gf.createPoint(new Coordinate(latitudePark, longitudePark)), null);
 		return siteRepository.save(site);
+	}
+
+	public void uploadImage(Long id, MultipartFile file) {
+		Optional<Site> optionalSite = siteRepository.findById(id);
+		if (optionalSite.isPresent()) {
+			Site site = optionalSite.get();
+			try {
+				site.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+			} catch (IOException e) {
+				throw new ResourceNotFoundException("Error to insert image");
+			}
+			siteRepository.save(site);
+		}
+	}
+
+	public String getImage(Long id) {
+		Site site = siteRepository.getOne(id);
+		return site.getImage();
 	}
 
 	public SiteDTO updateSite(Long id, SiteDTO siteDto) {

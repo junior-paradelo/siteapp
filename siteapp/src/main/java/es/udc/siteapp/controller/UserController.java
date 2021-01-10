@@ -46,7 +46,7 @@ public class UserController {
 	@PostMapping("users")
 	public JwtUser createUser(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
-				userDto.getFirstname(), userDto.getLastname(), Boolean.FALSE, null);
+				userDto.getFirstname(), userDto.getLastname(), Boolean.FALSE);
 		return JwtUserFactory.create(registerUser);
 	}
 
@@ -63,7 +63,7 @@ public class UserController {
 	@PostMapping("users/admin")
 	public JwtUser createUserAdmin(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
-				userDto.getFirstname(), userDto.getLastname(), Boolean.TRUE, null);
+				userDto.getFirstname(), userDto.getLastname(), Boolean.TRUE);
 		return JwtUserFactory.create(registerUser);
 	}
 

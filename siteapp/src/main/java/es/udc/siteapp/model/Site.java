@@ -59,20 +59,31 @@ public class Site extends AuditModel {
 	@JoinColumn(name = "SITEDETAILS_ID", referencedColumnName = "ID")
 	private SiteDetails siteDetails;
 
+	// ST_asText(coordinates)
 	@Column(columnDefinition = "geometry(Point,4326)")
 	public Point coordinates;
 
-	public Site(String name, String province, String townHall, Category category, Point coordinates,
-			String description) {
+	@Column(columnDefinition = "geometry(Point,4326)")
+	public Point coordinatesPark;
+
+	// Base64.getEncoder().encodeToString(file.getBytes())
+	@Column(columnDefinition = "text")
+	private String image;
+
+	public Site(String name, String province, String townHall, Category category, String description,
+			SiteDetails siteDetails, Point coordinates, Point coordinatesPark, String image) {
 		super();
+		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		this.name = name;
 		this.province = province;
 		this.townHall = townHall;
-		this.category = category;
 		this.enabled = true;
-		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		this.category = category;
 		this.description = description;
+		this.siteDetails = siteDetails;
 		this.coordinates = coordinates;
+		this.coordinatesPark = coordinatesPark;
+		this.image = image;
 	}
 
 }

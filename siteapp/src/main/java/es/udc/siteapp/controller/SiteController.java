@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
@@ -48,10 +50,20 @@ public class SiteController {
 
 	@PostMapping("sites")
 	public SiteDTO createSite(@RequestBody SiteDTO site) {
-
 		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall(),
-				site.getCategory(), site.getLatitude(), site.getLongitude(), site.getDescription());
+				site.getCategory(), site.getLatitude(), site.getLongitude(), site.getLatitudePark(),
+				site.getLongitudePark(), site.getDescription());
 		return new SiteDTO(registerSite);
+	}
+
+	@PutMapping("sites/upload/{id}")
+	public void uploadImage(@PathVariable(value = "id") Long id, @RequestParam("image") MultipartFile file) {
+		siteService.uploadImage(id, file);
+	}
+
+	@GetMapping("sites/image/{id}")
+	public String getImage(@PathVariable(value = "id") Long id) {
+		return siteService.getImage(id);
 	}
 
 	@PutMapping("sites/{id}")

@@ -1,6 +1,6 @@
 package es.udc.siteapp.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import es.udc.siteapp.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
@@ -53,8 +51,7 @@ public class User extends AuditModel {
 	private Boolean enabled;
 
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastPasswordResetDate;
+	private Timestamp lastPasswordResetDate;
 
 	@ManyToOne
 	@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")
@@ -72,19 +69,19 @@ public class User extends AuditModel {
 		this.lastname = userDto.getLastname();
 	}
 
-	public User(String username, String password, String firstname, String lastname, String email, Date createdAt,
-			Date lastPasswordResetDate, Authority authority) {
+	public User(String username, String password, String firstname, String lastname, String email, Authority authority,
+			String image) {
 		super();
+		this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		this.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 		this.enabled = true;
-		this.lastPasswordResetDate = lastPasswordResetDate;
-		this.setCreatedAt(createdAt);
 		this.authority = authority;
-
+		this.image = image;
 	}
 
 }

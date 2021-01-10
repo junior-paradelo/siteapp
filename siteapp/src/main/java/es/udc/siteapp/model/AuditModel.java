@@ -1,6 +1,6 @@
 package es.udc.siteapp.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.MappedSuperclass;
 
@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 @MappedSuperclass
 public abstract class AuditModel {
-	private Date createdAt;
-	private Date updatedAt;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 }

@@ -1,6 +1,6 @@
 package es.udc.siteapp.service.dto;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
@@ -20,11 +20,14 @@ public class SiteDTO {
 	private String townHall;
 	private Category category;
 	private String description;
-	private Date createdAt;
+	private Timestamp createdAt;
 	private SiteDetails siteDetails;
+	private String image;
 	// POINT(x y)
 	private Double latitude;
 	private Double longitude;
+	private Double latitudePark;
+	private Double longitudePark;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -37,5 +40,8 @@ public class SiteDTO {
 		siteDetails = site.getSiteDetails();
 		latitude = site.getCoordinates().getX();
 		longitude = site.getCoordinates().getY();
+		latitudePark = site.getCoordinatesPark().getX();
+		longitudePark = site.getCoordinatesPark().getY();
+		image = site.getImage();
 	}
 }

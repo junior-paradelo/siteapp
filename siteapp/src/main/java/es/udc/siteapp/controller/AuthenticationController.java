@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.udc.siteapp.security.JwtAuthenticationRequest;
@@ -23,6 +24,7 @@ import es.udc.siteapp.security.JwtTokenUtil;
 import es.udc.siteapp.security.JwtUser;
 
 @RestController
+@RequestMapping("/api/")
 public class AuthenticationController {
 
 	@Value("${jwt.header}")
