@@ -38,10 +38,14 @@ public class SiteDTO {
 		description = site.getDescription();
 		createdAt = site.getCreatedAt();
 		siteDetails = site.getSiteDetails();
-		latitude = site.getCoordinates().getX();
-		longitude = site.getCoordinates().getY();
-		latitudePark = site.getCoordinatesPark().getX();
-		longitudePark = site.getCoordinatesPark().getY();
+		if (site.getCoordinates() != null) {
+			latitude = site.getCoordinates().getX();
+			longitude = site.getCoordinates().getY();
+		}
+		if (site.getCoordinatesPark() != null) {
+			latitudePark = site.getCoordinatesPark().getX();
+			longitudePark = site.getCoordinatesPark().getY();
+		}
 		image = site.getImage();
 	}
 }
