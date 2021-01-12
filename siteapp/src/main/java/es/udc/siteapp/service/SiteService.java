@@ -69,9 +69,16 @@ public class SiteService {
 		return new SiteDTO(site);
 	}
 
-	public Site registerSite(String name, String province, String townHall, Category category, Double latitude,
+	public Site registerSite(String name, String province, String townHall, Long categoryId, Double latitude,
 			Double longitude, Double latitudePark, Double longitudePark, String description) {
 		GeometryFactory gf = new GeometryFactory();
+		if (latitudePark == null) {
+			latitudePark = latitude;
+		}
+		if (longitudePark == null) {
+			longitudePark = longitude;
+		}
+		Category category = categoryRepository.getOne(categoryId);
 		Site site = new Site(name, province, townHall, category, description, null,
 				gf.createPoint(new Coordinate(latitude, longitude)),
 				gf.createPoint(new Coordinate(latitudePark, longitudePark)), null);
@@ -109,7 +116,8 @@ public class SiteService {
 			site.setTownHall(siteDto.getTownHall());
 		}
 		if (siteDto.getCategory() != null) {
-			site.setCategory(siteDto.getCategory());
+			Category category = categoryRepository.getOne(siteDto.getCategory());
+			site.setCategory(category);
 		}
 		if (siteDto.getDescription() != null) {
 			site.setDescription(siteDto.getDescription());

@@ -2,7 +2,6 @@ package es.udc.siteapp.service.dto;
 
 import java.sql.Timestamp;
 
-import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.model.SiteDetails;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ public class SiteDTO {
 	private String name;
 	private String province;
 	private String townHall;
-	private Category category;
+	private Long category;
 	private String description;
 	private Timestamp createdAt;
 	private SiteDetails siteDetails;
@@ -34,7 +33,7 @@ public class SiteDTO {
 		name = site.getName();
 		province = site.getProvince();
 		townHall = site.getTownHall();
-		category = site.getCategory();
+		category = site.getCategory().getId();
 		description = site.getDescription();
 		createdAt = site.getCreatedAt();
 		siteDetails = site.getSiteDetails();
