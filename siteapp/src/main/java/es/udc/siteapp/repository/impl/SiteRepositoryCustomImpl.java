@@ -1,5 +1,6 @@
 package es.udc.siteapp.repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -17,9 +18,11 @@ public class SiteRepositoryCustomImpl implements SiteRepositoryCustom {
 	EntityManager entityManager;
 
 	@Override
-	public List<Site> findSiteByKeyword(String keyword) {
-		Query query = entityManager.createQuery("from Site where lower(name) like lower(:keyword)");
+	public List<Site> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
+		Query query = entityManager
+				.createQuery("from Site where lower(name) like lower(:keyword) and category_id in (:categories)");
 		query.setParameter("keyword", "%" + keyword + "%");
+		query.setParameter("categories", categories);
 		return query.getResultList();
 	}
 

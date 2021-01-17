@@ -1,5 +1,6 @@
 package es.udc.siteapp.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,10 @@ public class SiteController {
 		return siteService.findAll();
 	}
 
-	@GetMapping("sites/keyword={keyword}")
-	public List<SiteDTO> findSiteByKeyword(@PathVariable(value = "keyword") String keyword) {
-		return siteService.findSiteByKeyword(keyword);
+	@GetMapping("sites/filter")
+	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
+			@RequestParam(value = "categories") ArrayList<Integer> categories) {
+		return siteService.findSiteByKeywordAndCategory(keyword, categories);
 	}
 
 	@GetMapping("sites/{id}")

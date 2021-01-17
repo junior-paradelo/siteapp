@@ -1,6 +1,7 @@
 package es.udc.siteapp.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public List<SiteDTO> findSiteByKeyword(String keyword) {
-		List<Site> findSiteByKeyword = siteRepository.findSiteByKeyword(keyword);
+	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
+		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories);
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findSiteByKeyword.size(); i++) {
 			Site site = findSiteByKeyword.get(i);
