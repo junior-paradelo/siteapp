@@ -10,6 +10,9 @@ import java.util.Optional;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,8 +35,22 @@ public class SiteService {
 	public List<SiteDTO> findAll() {
 		List<Site> findAll = siteRepository.findAll();
 		List<SiteDTO> siteDtoList = new LinkedList<>();
-		for (int i = 0; i < findAll.size(); i++) {
-			Site site = findAll.get(i);
+		for (Site site : findAll) {
+			SiteDTO siteDTO = new SiteDTO(site);
+			siteDtoList.add(siteDTO);
+		}
+		return siteDtoList;
+	}
+
+	public Integer countSites() {
+		return Integer.valueOf((int) siteRepository.count());
+	}
+
+	public List<SiteDTO> findLastSites(Integer page) {
+		Pageable pageable = PageRequest.of(page, 10, Direction.DESC, "siteId");
+		List<Site> results = siteRepository.findAll(pageable).getContent();
+		List<SiteDTO> siteDtoList = new LinkedList<>();
+		for (Site site : results) {
 			SiteDTO siteDTO = new SiteDTO(site);
 			siteDtoList.add(siteDTO);
 		}

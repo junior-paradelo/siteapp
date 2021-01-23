@@ -34,6 +34,16 @@ public class SiteController {
 		return siteService.findAll();
 	}
 
+	@GetMapping("sites/count")
+	public Integer count() {
+		return siteService.countSites();
+	}
+
+	@GetMapping("sites/pagination")
+	public List<SiteDTO> findLastSites(@RequestParam("page") Integer page) {
+		return siteService.findLastSites(page);
+	}
+
 	@GetMapping("sites/filter")
 	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
 			@RequestParam(value = "categories") ArrayList<Integer> categories) {

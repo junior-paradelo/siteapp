@@ -18,6 +18,7 @@ public class SiteDTO {
 	private String province;
 	private String townHall;
 	private Long category;
+	private String categoryName;
 	private String description;
 	private Timestamp createdAt;
 	private SiteDetails siteDetails;
@@ -34,6 +35,7 @@ public class SiteDTO {
 		province = site.getProvince();
 		townHall = site.getTownHall();
 		category = site.getCategory().getId();
+		categoryName = site.getCategory().getName();
 		description = site.getDescription();
 		createdAt = site.getCreatedAt();
 		siteDetails = site.getSiteDetails();
