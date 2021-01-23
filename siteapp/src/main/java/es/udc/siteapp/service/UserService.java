@@ -129,8 +129,8 @@ public class UserService {
 		return authorityRepository.findAll();
 	}
 
-	public UserDTO changePassword(Long id, UserDTO userDto) {
-		User user = userRepository.getOne(id);
+	public UserDTO changePassword(UserDTO userDto) {
+		User user = userRepository.findByUsername(userDto.getUsername());
 		User userSave = null;
 		if (user.getUsername().equalsIgnoreCase(userDto.getUsername())
 				&& user.getEmail().equalsIgnoreCase(userDto.getEmail())) {

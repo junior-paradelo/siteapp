@@ -85,9 +85,9 @@ public class UserController {
 		return userService.findAllAuthorities();
 	}
 
-	@PutMapping("/users/changePassword/{id}")
-	public UserDTO changePassword(@PathVariable Long id, @RequestBody UserDTO userDto) {
-		return userService.changePassword(id, userDto);
+	@PutMapping("/users/changePassword")
+	public UserDTO changePassword(@RequestBody UserDTO userDto) {
+		return userService.changePassword(userDto);
 	}
 
 }
