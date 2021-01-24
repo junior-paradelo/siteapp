@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,7 @@ public class SiteService {
 	CategoryRepository categoryRepository;
 
 	public List<SiteDTO> findAll() {
-		List<Site> findAll = siteRepository.findAll();
+		List<Site> findAll = siteRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (Site site : findAll) {
 			SiteDTO siteDTO = new SiteDTO(site);
