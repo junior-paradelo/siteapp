@@ -38,7 +38,7 @@ public class SiteRepositoryCustomImpl implements SiteRepositoryCustom {
 
 	@Override
 	public List<Site> findSiteByCategory(Integer categoryId) {
-		Query query = entityManager.createQuery("from Site where category_id = :category");
+		Query query = entityManager.createQuery("from Site where category_id = :category order by created_at desc");
 		query.setParameter("category", categoryId);
 		return query.getResultList();
 	}
