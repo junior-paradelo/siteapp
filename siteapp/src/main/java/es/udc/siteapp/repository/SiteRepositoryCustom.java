@@ -3,12 +3,15 @@ package es.udc.siteapp.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
 
 public interface SiteRepositoryCustom {
 
-	List<Site> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories);
+	List<Site> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories, Integer page);
 
-	List<Site> findSiteByCategory(Category category);
+	List<Site> findSiteByCategory(Integer categoryId);
+
+	Long countSitesByKeywordAndCategory(String keyword, ArrayList<Integer> categories);
+
+	Long countSitesByCategory(Integer categoryId);
 }

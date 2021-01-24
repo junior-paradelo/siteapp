@@ -57,8 +57,8 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
-		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories);
+	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories, Integer page) {
+		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories, page);
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findSiteByKeyword.size(); i++) {
 			Site site = findSiteByKeyword.get(i);
@@ -66,6 +66,25 @@ public class SiteService {
 			siteDtoList.add(siteDTO);
 		}
 		return siteDtoList;
+	}
+
+	public Long countSitesByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
+		return siteRepository.countSitesByKeywordAndCategory(keyword, categories);
+	}
+
+	public List<SiteDTO> findSiteByCategory(Integer categoryId) {
+		List<Site> findSiteByCategory = siteRepository.findSiteByCategory(categoryId);
+		List<SiteDTO> siteDtoList = new LinkedList<>();
+		for (int i = 0; i < findSiteByCategory.size(); i++) {
+			Site site = findSiteByCategory.get(i);
+			SiteDTO siteDTO = new SiteDTO(site);
+			siteDtoList.add(siteDTO);
+		}
+		return siteDtoList;
+	}
+
+	public Long countSitesByCategory(Integer categoryId) {
+		return siteRepository.countSitesByCategory(categoryId);
 	}
 
 	public SiteDTO getSiteById(Long id) {

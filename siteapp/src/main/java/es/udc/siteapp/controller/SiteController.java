@@ -46,8 +46,25 @@ public class SiteController {
 
 	@GetMapping("sites/filter")
 	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
+			@RequestParam(value = "categories") ArrayList<Integer> categories,
+			@RequestParam(value = "page") Integer page) {
+		return siteService.findSiteByKeywordAndCategory(keyword, categories, page);
+	}
+
+	@GetMapping("sites/filter/pagination")
+	public Long countSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
 			@RequestParam(value = "categories") ArrayList<Integer> categories) {
-		return siteService.findSiteByKeywordAndCategory(keyword, categories);
+		return siteService.countSitesByKeywordAndCategory(keyword, categories);
+	}
+
+	@GetMapping("sites/filter/category")
+	public List<SiteDTO> findSiteByCategory(@RequestParam(value = "categoryId") Integer categoryId) {
+		return siteService.findSiteByCategory(categoryId);
+	}
+
+	@GetMapping("sites/filter/category/pagination")
+	public Long countSitesByCategory(@RequestParam(value = "categoryId") Integer categoryId) {
+		return siteService.countSitesByCategory(categoryId);
 	}
 
 	@GetMapping("sites/{id}")
