@@ -122,6 +122,7 @@ public class UserService {
 	}
 
 	public List<SiteDTO> findFavourited(Long id) {
+
 		return null;
 	}
 

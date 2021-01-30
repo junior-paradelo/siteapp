@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.model.Authority;
 import es.udc.siteapp.model.User;
-import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.security.JwtUser;
 import es.udc.siteapp.security.JwtUserFactory;
 import es.udc.siteapp.service.UserService;
@@ -30,8 +29,6 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
-	@Autowired
-	UserRepository ur;
 
 	@GetMapping("users")
 	public List<UserDTO> findAllUsers() {
@@ -72,7 +69,7 @@ public class UserController {
 		return userService.updateUser(id, userDto);
 	}
 
-	@DeleteMapping(value = "users/delete/{id}")
+	@DeleteMapping("users/delete/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long id) {
 		userService.deleteById(id);
 		Map<String, Boolean> response = new HashMap<>();
