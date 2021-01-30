@@ -45,9 +45,22 @@ public class UserSiteRepositoryCustomImpl implements UserSiteRepositoryCustom {
 
 	@Override
 	public Double getAVGRate(Site site) {
-		Query query = entityManager.createQuery("select avg(rate) from UserSite where site = :site");
+		List<UserSite> list = findBySiteId(site);
+		if (!list.isEmpty()) {
+			Query query = entityManager.createQuery("select avg(rate) from UserSite where site = :site");
+			query.setParameter("site", site);
+			return (Double) query.getResultList().stream().findFirst().orElse(null);
+		} else {
+			return (double) 0;
+		}
+	}
+
+	@Override
+	public void deleteBySite(Site site) {
+		Query query = entityManager.createQuery("delete from UserSite where site = :site");
 		query.setParameter("site", site);
-		return (Double) query.getResultList().stream().findFirst().orElse(null);
+		int executeUpdate = query.executeUpdate();
+		System.out.print(executeUpdate);
 	}
 
 }

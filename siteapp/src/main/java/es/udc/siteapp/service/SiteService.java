@@ -15,13 +15,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Site;
+import es.udc.siteapp.model.SiteDetails;
 import es.udc.siteapp.repository.CategoryRepository;
+import es.udc.siteapp.repository.SiteDetailsRepository;
 import es.udc.siteapp.repository.SiteRepository;
+import es.udc.siteapp.repository.UserSiteRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
 
 @Service
@@ -32,6 +36,12 @@ public class SiteService {
 
 	@Autowired
 	CategoryRepository categoryRepository;
+
+	@Autowired
+	UserSiteRepository userSiteRepository;
+
+	@Autowired
+	SiteDetailsRepository siteDetailsRepository;
 
 	public List<SiteDTO> findAll() {
 		List<Site> findAll = siteRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -108,7 +118,7 @@ public class SiteService {
 	}
 
 	public Site registerSite(String name, String province, String townHall, Long categoryId, Double latitude,
-			Double longitude, Double latitudePark, Double longitudePark, String description) {
+			Double longitude, Double latitudePark, Double longitudePark, String description, SiteDetails siteDetails) {
 		GeometryFactory gf = new GeometryFactory();
 		if (latitudePark == null) {
 			latitudePark = latitude;
@@ -116,8 +126,12 @@ public class SiteService {
 		if (longitudePark == null) {
 			longitudePark = longitude;
 		}
+		SiteDetails sDetails = new SiteDetails(siteDetails.getHeader(), siteDetails.getResume(),
+				siteDetails.getComment(), siteDetails.getAccessType(), siteDetails.getGoCar(),
+				siteDetails.getGoChildren());
+		SiteDetails sdSaved = siteDetailsRepository.save(sDetails);
 		Category category = categoryRepository.getOne(categoryId);
-		Site site = new Site(name, province, townHall, category, description, null,
+		Site site = new Site(name, province, townHall, category, description, sdSaved,
 				gf.createPoint(new Coordinate(latitude, longitude)),
 				gf.createPoint(new Coordinate(latitudePark, longitudePark)), null);
 		return siteRepository.save(site);
@@ -165,7 +179,10 @@ public class SiteService {
 		return new SiteDTO(siteSave);
 	}
 
+	@Transactional
 	public void deleteSiteById(Long id) {
+		Site site = siteRepository.findById(id).get();
+		userSiteRepository.deleteBySite(site);
 		siteRepository.deleteById(id);
 	}
 

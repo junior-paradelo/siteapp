@@ -16,4 +16,6 @@ public interface UserSiteRepositoryCustom {
 	List<UserSite> findSitesByState(User user, UserSiteState state);
 
 	Double getAVGRate(Site site);
+
+	void deleteBySite(Site site);
 }

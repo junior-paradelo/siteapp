@@ -81,7 +81,7 @@ public class SiteController {
 	public SiteDTO createSite(@RequestBody SiteDTO site) {
 		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall(),
 				site.getCategory(), site.getLatitude(), site.getLongitude(), site.getLatitudePark(),
-				site.getLongitudePark(), site.getDescription());
+				site.getLongitudePark(), site.getDescription(), site.getSiteDetails());
 		return new SiteDTO(registerSite);
 	}
 
@@ -95,12 +95,12 @@ public class SiteController {
 		return siteService.getImage(id);
 	}
 
-	@PutMapping("sites/{id}")
+	@PutMapping("sites/update/{id}")
 	public SiteDTO updateSite(@PathVariable(value = "id") Long id, @RequestBody SiteDTO siteDto) {
 		return siteService.updateSite(id, siteDto);
 	}
 
-	@DeleteMapping("sites/{id}")
+	@DeleteMapping("sites/delete/{id}")
 	public Map<String, Boolean> deleteSite(@PathVariable(value = "id") Long id) {
 		siteService.deleteSiteById(id);
 		Map<String, Boolean> response = new HashMap<>();

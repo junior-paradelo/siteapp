@@ -29,4 +29,21 @@ public class SiteDetails {
 	@Column(columnDefinition = "TEXT")
 	private String comment;
 
+	private String accessType;
+
+	private Boolean goCar;
+
+	private Boolean goChildren;
+
+	public SiteDetails(String header, String resume, String comment, String accessType, Boolean goCar,
+			Boolean goChildren) {
+		super();
+		this.header = header;
+		this.resume = resume;
+		this.comment = comment;
+		this.accessType = accessType;
+		this.goCar = goCar;
+		this.goChildren = goChildren;
+	}
+
 }
