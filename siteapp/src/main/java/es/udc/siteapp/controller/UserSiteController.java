@@ -30,8 +30,8 @@ public class UserSiteController {
 
 	@PostMapping("/userSite/saveState")
 	public void saveState(@RequestParam("userId") Long userId, @RequestParam("siteId") Long siteId,
-			@RequestParam("state") String state) {
-		userSiteService.saveState(userId, siteId, state);
+			@RequestParam("state") String state, @RequestParam("rate") Integer rate) {
+		userSiteService.saveState(userId, siteId, state, rate);
 	}
 
 	@DeleteMapping("/userSite/delete")
@@ -47,5 +47,10 @@ public class UserSiteController {
 	public UserSiteDTO findByUserAndSiteId(@RequestParam("userId") Long userId, @RequestParam("siteId") Long siteId,
 			@RequestParam("state") String state) {
 		return userSiteService.findByUserAndSiteId(userId, siteId, state);
+	}
+
+	@GetMapping("/userSite/getAVGRate")
+	public Double getAVGRate(@RequestParam("siteId") Long siteId) {
+		return userSiteService.getAVGRate(siteId);
 	}
 }

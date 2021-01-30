@@ -11,9 +11,9 @@ public interface UserSiteRepositoryCustom {
 
 	UserSite findByUserAndSiteId(User user, Site site, UserSiteState state);
 
-	List<UserSite> findBySiteId(Long siteId);
+	List<UserSite> findBySiteId(Site site);
 
 	List<UserSite> findSitesByState(User user, UserSiteState state);
 
-	Double getAVGRate(Long siteId);
+	Double getAVGRate(Site site);
 }

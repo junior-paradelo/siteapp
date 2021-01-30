@@ -28,9 +28,9 @@ public class UserSiteRepositoryCustomImpl implements UserSiteRepositoryCustom {
 	}
 
 	@Override
-	public List<UserSite> findBySiteId(Long siteId) {
-		Query query = entityManager.createQuery("from UserSite where site = :siteId");
-		query.setParameter("siteId", siteId);
+	public List<UserSite> findBySiteId(Site site) {
+		Query query = entityManager.createQuery("from UserSite where site = :site");
+		query.setParameter("site", site);
 		return query.getResultList();
 	}
 
@@ -44,9 +44,9 @@ public class UserSiteRepositoryCustomImpl implements UserSiteRepositoryCustom {
 	}
 
 	@Override
-	public Double getAVGRate(Long siteId) {
-		Query query = entityManager.createQuery("select avg(rate) from Site where site = :siteId");
-		query.setParameter("siteId", siteId);
+	public Double getAVGRate(Site site) {
+		Query query = entityManager.createQuery("select avg(rate) from UserSite where site = :site");
+		query.setParameter("site", site);
 		return (Double) query.getResultList().stream().findFirst().orElse(null);
 	}
 

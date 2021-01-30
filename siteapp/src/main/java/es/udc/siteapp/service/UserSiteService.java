@@ -37,13 +37,13 @@ public class UserSiteService {
 		return userSiteDtoList;
 	}
 
-	public void saveState(Long userId, Long siteId, String state) {
+	public void saveState(Long userId, Long siteId, String state, Integer rate) {
 		User user = userRepository.getOne(userId);
 		Site site = siteRepository.getOne(siteId);
 		UserSiteState userSiteState = UserSiteState.valueOf(state);
 		UserSite userSite = userSiteRepository.findByUserAndSiteId(user, site, userSiteState);
 		if (userSite == null) {
-			userSite = new UserSite(site, user, userSiteState);
+			userSite = new UserSite(site, user, rate, userSiteState);
 			userSiteRepository.save(userSite);
 		}
 	}
@@ -67,5 +67,10 @@ public class UserSiteService {
 		UserSiteState userSiteState = UserSiteState.valueOf(state);
 		UserSite userSite = userSiteRepository.findByUserAndSiteId(user, site, userSiteState);
 		userSiteRepository.delete(userSite);
+	}
+
+	public Double getAVGRate(Long siteId) {
+		Site site = siteRepository.getOne(siteId);
+		return userSiteRepository.getAVGRate(site);
 	}
 }
