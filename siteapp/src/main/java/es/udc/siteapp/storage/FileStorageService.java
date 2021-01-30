@@ -6,6 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +73,23 @@ public class FileStorageService {
 			throw new StorageException("Issue in reading the file: " + e);
 		}
 		return resource;
+	}
+
+	public List<String> downloadFiles(Long siteId) {
+		Site site = siteRepository.findById(siteId).get();
+		List<SiteImage> list = siteImageRepository.findBySite(site);
+		List<String> listaB64 = new LinkedList<>();
+		for (SiteImage siteImage : list) {
+			Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(siteImage.getImageName());
+			byte[] fileContent;
+			try {
+				fileContent = Files.readAllBytes(path);
+			} catch (IOException e) {
+				throw new StorageException("Issue in reading the file: " + e);
+			}
+			String encodeToString = Base64.getEncoder().encodeToString(fileContent);
+			listaB64.add(encodeToString);
+		}
+		return listaB64;
 	}
 }

@@ -1,6 +1,7 @@
 package es.udc.siteapp.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,6 +56,11 @@ public class UploadAndDownloadFileController {
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
+	}
+
+	@GetMapping("/downloads/")
+	public List<String> downloadFile(@RequestParam("siteId") Long siteId) {
+		return fileStorageService.downloadFiles(siteId);
 	}
 
 }
