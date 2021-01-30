@@ -24,7 +24,7 @@ public class UserSiteRepositoryCustomImpl implements UserSiteRepositoryCustom {
 		query.setParameter("user", user);
 		query.setParameter("site", site);
 		query.setParameter("state", state);
-		return (UserSite) query.getSingleResult();
+		return (UserSite) query.getResultList().stream().findFirst().orElse(null);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class UserSiteRepositoryCustomImpl implements UserSiteRepositoryCustom {
 	public Double getAVGRate(Long siteId) {
 		Query query = entityManager.createQuery("select avg(rate) from Site where site = :siteId");
 		query.setParameter("siteId", siteId);
-		return (Double) query.getSingleResult();
+		return (Double) query.getResultList().stream().findFirst().orElse(null);
 	}
 
 }

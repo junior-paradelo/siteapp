@@ -42,4 +42,10 @@ public class UserSiteController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+
+	@GetMapping("/userSite/findByUserAndSiteId")
+	public UserSiteDTO findByUserAndSiteId(@RequestParam("userId") Long userId, @RequestParam("siteId") Long siteId,
+			@RequestParam("state") String state) {
+		return userSiteService.findByUserAndSiteId(userId, siteId, state);
+	}
 }
