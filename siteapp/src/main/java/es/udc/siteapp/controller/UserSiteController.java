@@ -30,7 +30,7 @@ public class UserSiteController {
 
 	@PostMapping("/userSite/saveState")
 	public void saveState(@RequestParam("userId") Long userId, @RequestParam("siteId") Long siteId,
-			@RequestParam("state") String state, @RequestParam("rate") Integer rate) {
+			@RequestParam("state") String state, @RequestParam(value = "rate", required = false) Integer rate) {
 		userSiteService.saveState(userId, siteId, state, rate);
 	}
 
