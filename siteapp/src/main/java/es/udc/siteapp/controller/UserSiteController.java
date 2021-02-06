@@ -20,7 +20,7 @@ import es.udc.siteapp.service.dto.UserSiteDTO;
 public class UserSiteController {
 
 	@Autowired
-	UserSiteService userSiteService;
+	private UserSiteService userSiteService;
 
 	@GetMapping("/userSite/getSitesByUserId")
 	public List<UserSiteDTO> getSitesByUserId(@RequestParam("userId") Long userId,

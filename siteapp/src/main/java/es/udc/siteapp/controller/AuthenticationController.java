@@ -40,8 +40,8 @@ public class AuthenticationController {
 	private UserDetailsService userDetailsService;
 
 	@PostMapping(value = "${jwt.route.authentication.path}")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)
-			throws AuthenticationException {
+	public ResponseEntity<JwtAuthenticationResponse> createAuthenticationToken(
+			@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
 		// Perform the security
 		final Authentication authentication = authenticationManager
@@ -58,7 +58,7 @@ public class AuthenticationController {
 	}
 
 	@GetMapping(value = "${jwt.route.authentication.refresh}")
-	public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+	public ResponseEntity<JwtAuthenticationResponse> refreshAndGetAuthenticationToken(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader);
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);

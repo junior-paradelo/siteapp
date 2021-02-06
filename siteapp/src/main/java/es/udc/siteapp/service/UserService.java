@@ -19,20 +19,19 @@ import es.udc.siteapp.model.AuthorityName;
 import es.udc.siteapp.model.User;
 import es.udc.siteapp.repository.AuthorityRepository;
 import es.udc.siteapp.repository.UserRepository;
-import es.udc.siteapp.service.dto.SiteDTO;
 import es.udc.siteapp.service.dto.UserDTO;
 
 @Service
 public class UserService {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	AuthorityRepository authorityRepository;
+	private AuthorityRepository authorityRepository;
 
 	@Autowired
-	PasswordEncoder bcrypt;
+	private PasswordEncoder bcrypt;
 
 	public List<UserDTO> findAll() {
 		List<User> findAll = userRepository.findAll();
@@ -57,11 +56,6 @@ public class UserService {
 			throw new ResourceNotFoundException("User not found with name: " + name);
 		}
 		return new UserDTO(user);
-	}
-
-	public User getCompleteUserById(Long id) {
-		return userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Complete user not found with id: " + id));
 	}
 
 	public User registerUser(String username, String password, String email, String firstname, String lastname,
@@ -118,12 +112,10 @@ public class UserService {
 	}
 
 	public void deleteById(Long id) {
-		userRepository.deleteById(id);
-	}
-
-	public List<SiteDTO> findFavourited(Long id) {
-
-		return null;
+//		userRepository.deleteById(id);
+		User user = userRepository.findById(id).get();
+		user.setEnabled(false);
+		userRepository.save(user);
 	}
 
 	public List<Authority> findAllAuthorities() {

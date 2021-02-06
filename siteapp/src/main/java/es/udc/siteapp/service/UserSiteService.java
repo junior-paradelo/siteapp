@@ -26,9 +26,7 @@ public class UserSiteService {
 	private SiteRepository siteRepository;
 
 	public List<UserSiteDTO> getSitesByUserId(Long userId, String state) {
-		UserSiteState userSiteState = UserSiteState.valueOf(state);
-		User user = userRepository.getOne(userId);
-		List<UserSite> list = userSiteRepository.findSitesByState(user, userSiteState);
+		List<UserSite> list = userSiteRepository.findByState(userId, UserSiteState.valueOf(state));
 		List<UserSiteDTO> userSiteDtoList = new LinkedList<>();
 		for (UserSite us : list) {
 			UserSiteDTO userSiteDTO = new UserSiteDTO(us);
@@ -38,21 +36,18 @@ public class UserSiteService {
 	}
 
 	public void saveState(Long userId, Long siteId, String state, Integer rate) {
-		User user = userRepository.getOne(userId);
-		Site site = siteRepository.getOne(siteId);
 		UserSiteState userSiteState = UserSiteState.valueOf(state);
-		UserSite userSite = userSiteRepository.findByUserAndSiteId(user, site, userSiteState);
+		UserSite userSite = userSiteRepository.findByUserAndSiteId(userId, siteId, UserSiteState.valueOf(state));
 		if (userSite == null) {
+			User user = userRepository.getOne(userId);
+			Site site = siteRepository.getOne(siteId);
 			userSite = new UserSite(site, user, rate, userSiteState);
 			userSiteRepository.save(userSite);
 		}
 	}
 
 	public UserSiteDTO findByUserAndSiteId(Long userId, Long siteId, String state) {
-		User user = userRepository.getOne(userId);
-		Site site = siteRepository.getOne(siteId);
-		UserSiteState userSiteState = UserSiteState.valueOf(state);
-		UserSite userSite = userSiteRepository.findByUserAndSiteId(user, site, userSiteState);
+		UserSite userSite = userSiteRepository.findByUserAndSiteId(userId, siteId, UserSiteState.valueOf(state));
 		UserSiteDTO userSiteDTO = null;
 		if (userSite != null) {
 			userSiteDTO = new UserSiteDTO(userSite);
@@ -62,15 +57,11 @@ public class UserSiteService {
 	}
 
 	public void deleteElement(Long userId, Long siteId, String state) {
-		User user = userRepository.getOne(userId);
-		Site site = siteRepository.getOne(siteId);
-		UserSiteState userSiteState = UserSiteState.valueOf(state);
-		UserSite userSite = userSiteRepository.findByUserAndSiteId(user, site, userSiteState);
+		UserSite userSite = userSiteRepository.findByUserAndSiteId(userId, siteId, UserSiteState.valueOf(state));
 		userSiteRepository.delete(userSite);
 	}
 
 	public Double getAVGRate(Long siteId) {
-		Site site = siteRepository.getOne(siteId);
-		return userSiteRepository.getAVGRate(site);
+		return userSiteRepository.getAVGRate(siteId);
 	}
 }

@@ -27,34 +27,22 @@ import es.udc.siteapp.service.dto.SiteDTO;
 public class SiteController {
 
 	@Autowired
-	SiteService siteService;
+	private SiteService siteService;
 
 	@GetMapping("sites")
 	public List<SiteDTO> findAllSites() {
 		return siteService.findAll();
 	}
 
-	@GetMapping("sites/count")
-	public Integer count() {
-		return siteService.countSites();
-	}
-
-	@GetMapping("sites/pagination")
-	public List<SiteDTO> findLastSites(@RequestParam("page") Integer page) {
-		return siteService.findLastSites(page);
+	@GetMapping("sites/last")
+	public List<SiteDTO> findLastSites(@RequestParam(value = "categoryId", required = false) Long categoryId) {
+		return siteService.findLastSites(categoryId);
 	}
 
 	@GetMapping("sites/filter")
 	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
-			@RequestParam(value = "categories") ArrayList<Integer> categories,
-			@RequestParam(value = "page") Integer page) {
-		return siteService.findSiteByKeywordAndCategory(keyword, categories, page);
-	}
-
-	@GetMapping("sites/filter/pagination")
-	public Long countSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
 			@RequestParam(value = "categories") ArrayList<Integer> categories) {
-		return siteService.countSitesByKeywordAndCategory(keyword, categories);
+		return siteService.findSiteByKeywordAndCategory(keyword, categories);
 	}
 
 	@GetMapping("sites/filter/category")
@@ -62,22 +50,12 @@ public class SiteController {
 		return siteService.findSiteByCategory(categoryId);
 	}
 
-	@GetMapping("sites/filter/category/pagination")
-	public Long countSitesByCategory(@RequestParam(value = "categoryId") Integer categoryId) {
-		return siteService.countSitesByCategory(categoryId);
-	}
-
 	@GetMapping("sites/{id}")
 	public SiteDTO getSiteById(@PathVariable(value = "id") Long id) {
 		return siteService.getSiteById(id);
 	}
 
-	@GetMapping("sites/name={name}")
-	public SiteDTO getSiteByName(@PathVariable(value = "name") String name) {
-		return siteService.getSiteByName(name);
-	}
-
-	@PostMapping("sites")
+	@PostMapping("sites/create")
 	public SiteDTO createSite(@RequestBody SiteDTO site) {
 		Site registerSite = siteService.registerSite(site.getName(), site.getProvince(), site.getTownHall(),
 				site.getCategory(), site.getLatitude(), site.getLongitude(), site.getLatitudePark(),
@@ -112,5 +90,4 @@ public class SiteController {
 	public List<Category> findAllCategories() {
 		return siteService.findAllCategories();
 	}
-
 }

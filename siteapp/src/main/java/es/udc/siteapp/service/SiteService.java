@@ -10,10 +10,7 @@ import java.util.Optional;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,19 +29,20 @@ import es.udc.siteapp.service.dto.SiteDTO;
 public class SiteService {
 
 	@Autowired
-	SiteRepository siteRepository;
+	private SiteRepository siteRepository;
 
 	@Autowired
-	CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
-	UserSiteRepository userSiteRepository;
+	private UserSiteRepository userSiteRepository;
 
 	@Autowired
-	SiteDetailsRepository siteDetailsRepository;
+	private SiteDetailsRepository siteDetailsRepository;
 
 	public List<SiteDTO> findAll() {
 		List<Site> findAll = siteRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+//		List<Site> findAll = siteRepository.findAllByOrderByCreatedAtDesc();
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (Site site : findAll) {
 			SiteDTO siteDTO = new SiteDTO(site);
@@ -53,13 +51,15 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public Integer countSites() {
-		return Integer.valueOf((int) siteRepository.count());
-	}
+	public List<SiteDTO> findLastSites(Long categoryId) {
+		List<Site> results = null;
+		if (categoryId != null) {
+			Category category = categoryRepository.getOne(categoryId);
+			results = siteRepository.findTop20ByCategoryOrderByCreatedAtDesc(category);
+		} else {
+			results = siteRepository.findTop20ByOrderByCreatedAtDesc();
+		}
 
-	public List<SiteDTO> findLastSites(Integer page) {
-		Pageable pageable = PageRequest.of(page, 10, Direction.DESC, "siteId");
-		List<Site> results = siteRepository.findAll(pageable).getContent();
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (Site site : results) {
 			SiteDTO siteDTO = new SiteDTO(site);
@@ -68,8 +68,8 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories, Integer page) {
-		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories, page);
+	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
+		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories);
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findSiteByKeyword.size(); i++) {
 			Site site = findSiteByKeyword.get(i);
@@ -79,12 +79,8 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public Long countSitesByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
-		return siteRepository.countSitesByKeywordAndCategory(keyword, categories);
-	}
-
 	public List<SiteDTO> findSiteByCategory(Integer categoryId) {
-		List<Site> findSiteByCategory = siteRepository.findSiteByCategory(categoryId);
+		List<Site> findSiteByCategory = siteRepository.findByCategory(categoryId.longValue());
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findSiteByCategory.size(); i++) {
 			Site site = findSiteByCategory.get(i);
@@ -94,26 +90,9 @@ public class SiteService {
 		return siteDtoList;
 	}
 
-	public Long countSitesByCategory(Integer categoryId) {
-		return siteRepository.countSitesByCategory(categoryId);
-	}
-
 	public SiteDTO getSiteById(Long id) {
 		Site site = siteRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Site not found with id: " + id));
-		return new SiteDTO(site);
-	}
-
-	public Site getCompleteSiteById(Long id) {
-		return siteRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Complete site not found with id: " + id));
-	}
-
-	public SiteDTO getSiteByName(String name) {
-		Site site = siteRepository.findSiteByName(name);
-		if (site == null) {
-			throw new ResourceNotFoundException("Site not found with name: " + name);
-		}
 		return new SiteDTO(site);
 	}
 
@@ -181,8 +160,7 @@ public class SiteService {
 
 	@Transactional
 	public void deleteSiteById(Long id) {
-		Site site = siteRepository.findById(id).get();
-		userSiteRepository.deleteBySite(site);
+		userSiteRepository.deleteBySite(id);
 		siteRepository.deleteById(id);
 	}
 

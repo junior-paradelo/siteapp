@@ -46,25 +46,25 @@ public class Site extends AuditModel {
 	private String townHall;
 
 	@Column(nullable = false)
-	private boolean enabled;
+	private Boolean enabled;
 
 	@ManyToOne
-	@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
 	@Column(length = 250)
 	private String description;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "SITEDETAILS_ID", referencedColumnName = "ID")
+	@JoinColumn(name = "sitedetails_id", referencedColumnName = "id")
 	private SiteDetails siteDetails;
 
 	// ST_asText(coordinates)
 	@Column(columnDefinition = "geometry(Point,4326)")
-	public Point coordinates;
+	private Point coordinates;
 
 	@Column(columnDefinition = "geometry(Point,4326)")
-	public Point coordinatesPark;
+	private Point coordinatesPark;
 
 	// Base64.getEncoder().encodeToString(file.getBytes())
 	@Column(columnDefinition = "text")

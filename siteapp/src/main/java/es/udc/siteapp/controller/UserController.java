@@ -28,7 +28,7 @@ import es.udc.siteapp.service.dto.UserDTO;
 public class UserController {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@GetMapping("users")
 	public List<UserDTO> findAllUsers() {
@@ -40,7 +40,7 @@ public class UserController {
 		return userService.getUserById(id);
 	}
 
-	@PostMapping("users")
+	@PostMapping("users/create")
 	public JwtUser createUser(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
 				userDto.getFirstname(), userDto.getLastname(), Boolean.FALSE);

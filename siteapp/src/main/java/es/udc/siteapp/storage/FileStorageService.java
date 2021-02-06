@@ -76,8 +76,7 @@ public class FileStorageService {
 	}
 
 	public List<String> downloadFiles(Long siteId) {
-		Site site = siteRepository.findById(siteId).get();
-		List<SiteImage> list = siteImageRepository.findBySite(site);
+		List<SiteImage> list = siteImageRepository.findBySite(siteId);
 		List<String> listaB64 = new LinkedList<>();
 		for (SiteImage siteImage : list) {
 			Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(siteImage.getImageName());
