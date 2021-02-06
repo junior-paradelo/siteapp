@@ -39,6 +39,11 @@ public class SiteController {
 		return siteService.findLastSites(categoryId);
 	}
 
+	@GetMapping("sites/name")
+	public List<SiteDTO> findSitesByName(@RequestParam(value = "name") String name) {
+		return siteService.findSitesByName(name);
+	}
+
 	@GetMapping("sites/filter")
 	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
 			@RequestParam(value = "categories") ArrayList<Integer> categories) {

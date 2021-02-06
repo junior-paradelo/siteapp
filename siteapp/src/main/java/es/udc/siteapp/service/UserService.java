@@ -50,12 +50,18 @@ public class UserService {
 		return new UserDTO(user);
 	}
 
-	public UserDTO getUserByName(String name) {
-		User user = userRepository.findByUsername(name);
-		if (user == null) {
+	public List<UserDTO> getUsersByName(String name) {
+		List<User> list = userRepository.findByUsernameContainingIgnoreCase(name);
+		if (list.isEmpty()) {
 			throw new ResourceNotFoundException("User not found with name: " + name);
 		}
-		return new UserDTO(user);
+		List<UserDTO> userDtoList = new LinkedList<>();
+		for (int i = 0; i < list.size(); i++) {
+			User user = list.get(i);
+			UserDTO userDTO = new UserDTO(user);
+			userDtoList.add(userDTO);
+		}
+		return userDtoList;
 	}
 
 	public User registerUser(String username, String password, String email, String firstname, String lastname,

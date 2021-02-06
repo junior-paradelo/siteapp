@@ -24,4 +24,6 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
 	@Query("from Site where lower(name) like lower(concat('%',:keyword,'%')) and category_id in (:categories)")
 	List<Site> findSiteByKeywordAndCategory(@Param("keyword") String keyword,
 			@Param("categories") ArrayList<Integer> categories);
+
+	List<Site> findByNameContainingIgnoreCase(String siteName);
 }

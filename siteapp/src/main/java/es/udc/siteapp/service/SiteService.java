@@ -51,6 +51,20 @@ public class SiteService {
 		return siteDtoList;
 	}
 
+	public List<SiteDTO> findSitesByName(String name) {
+		List<Site> list = siteRepository.findByNameContainingIgnoreCase(name);
+		if (list.isEmpty()) {
+			throw new ResourceNotFoundException("Site not found with name: " + name);
+		}
+		List<SiteDTO> siteDtoList = new LinkedList<>();
+		for (int i = 0; i < list.size(); i++) {
+			Site site = list.get(i);
+			SiteDTO siteDTO = new SiteDTO(site);
+			siteDtoList.add(siteDTO);
+		}
+		return siteDtoList;
+	}
+
 	public List<SiteDTO> findLastSites(Long categoryId) {
 		List<Site> results = null;
 		if (categoryId != null) {

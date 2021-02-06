@@ -40,6 +40,11 @@ public class UserController {
 		return userService.getUserById(id);
 	}
 
+	@GetMapping("users/name")
+	public List<UserDTO> getUsersByName(@RequestParam(value = "username") String username) {
+		return userService.getUsersByName(username);
+	}
+
 	@PostMapping("users/create")
 	public JwtUser createUser(@RequestBody UserDTO userDto) {
 		User registerUser = userService.registerUser(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(),
