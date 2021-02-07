@@ -28,6 +28,7 @@ public class SiteDTO {
 	private Double longitude;
 	private Double latitudePark;
 	private Double longitudePark;
+	private Boolean enabled;
 
 	public SiteDTO(Site site) {
 		id = site.getSiteId();
@@ -48,5 +49,6 @@ public class SiteDTO {
 			longitudePark = site.getCoordinatesPark().getY();
 		}
 		image = site.getImage();
+		enabled = site.getEnabled();
 	}
 }

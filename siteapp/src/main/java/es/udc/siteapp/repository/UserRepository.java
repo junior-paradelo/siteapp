@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Modifying
 	@Query("from User where id = :userId")
-	User findByUserId(Long userId);
+	List<User> findByUserId(Long userId);
 
 }

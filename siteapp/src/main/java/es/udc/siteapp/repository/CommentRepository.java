@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import es.udc.siteapp.model.SiteImage;
+import es.udc.siteapp.model.Comment;
 
-public interface SiteImageRepository extends JpaRepository<SiteImage, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 	@Modifying
-	@Query("from SiteImage where siteid = :siteId")
-	List<SiteImage> findBySite(@Param("siteId") Long siteId);
+	@Query("from Comment where sitedetails_id = :siteDetailsId")
+	List<Comment> findBySiteDetails(@Param("siteDetailsId") Long siteDetailsId);
+
 }

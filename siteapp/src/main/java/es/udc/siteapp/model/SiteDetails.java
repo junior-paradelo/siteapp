@@ -26,8 +26,7 @@ public class SiteDetails {
 	@Column(columnDefinition = "TEXT")
 	private String resume;
 
-	@Column(columnDefinition = "TEXT")
-	private String comment;
+	private String constraints;
 
 	private String accessType;
 
@@ -35,15 +34,14 @@ public class SiteDetails {
 
 	private Boolean goChildren;
 
-	public SiteDetails(String header, String resume, String comment, String accessType, Boolean goCar,
+	public SiteDetails(String header, String resume, String constraint, String accessType, Boolean goCar,
 			Boolean goChildren) {
 		super();
 		this.header = header;
 		this.resume = resume;
-		this.comment = comment;
+		this.constraints = constraint;
 		this.accessType = accessType;
 		this.goCar = goCar;
 		this.goChildren = goChildren;
 	}
-
 }

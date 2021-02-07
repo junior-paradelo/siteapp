@@ -17,11 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.exception.ResourceNotFoundException;
 import es.udc.siteapp.model.Category;
+import es.udc.siteapp.model.Comment;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.model.SiteDetails;
+import es.udc.siteapp.model.User;
 import es.udc.siteapp.repository.CategoryRepository;
+import es.udc.siteapp.repository.CommentRepository;
 import es.udc.siteapp.repository.SiteDetailsRepository;
 import es.udc.siteapp.repository.SiteRepository;
+import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.repository.UserSiteRepository;
 import es.udc.siteapp.service.dto.SiteDTO;
 
@@ -39,6 +43,12 @@ public class SiteService {
 
 	@Autowired
 	private SiteDetailsRepository siteDetailsRepository;
+
+	@Autowired
+	private CommentRepository commentRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	public List<SiteDTO> findAll() {
 		List<Site> findAll = siteRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -110,6 +120,20 @@ public class SiteService {
 		return new SiteDTO(site);
 	}
 
+	public List<Comment> getCommentsById(Long siteId) {
+		Site site = siteRepository.getOne(siteId);
+		SiteDetails siteDetails = site.getSiteDetails();
+		return commentRepository.findBySiteDetails(siteDetails.getId());
+	}
+
+	public void insertComment(Long siteId, Long autorId, String text) {
+		Site site = siteRepository.getOne(siteId);
+		User user = userRepository.findByUserId(autorId).get(0);
+		String realName = user.getFirstname() + " " + user.getLastname();
+		Comment comment = new Comment(realName, autorId, text, site.getSiteDetails());
+		commentRepository.save(comment);
+	}
+
 	public Site registerSite(String name, String province, String townHall, Long categoryId, Double latitude,
 			Double longitude, Double latitudePark, Double longitudePark, String description, SiteDetails siteDetails) {
 		GeometryFactory gf = new GeometryFactory();
@@ -120,7 +144,7 @@ public class SiteService {
 			longitudePark = longitude;
 		}
 		SiteDetails sDetails = new SiteDetails(siteDetails.getHeader(), siteDetails.getResume(),
-				siteDetails.getComment(), siteDetails.getAccessType(), siteDetails.getGoCar(),
+				siteDetails.getConstraints(), siteDetails.getAccessType(), siteDetails.getGoCar(),
 				siteDetails.getGoChildren());
 		SiteDetails sdSaved = siteDetailsRepository.save(sDetails);
 		Category category = categoryRepository.getOne(categoryId);
