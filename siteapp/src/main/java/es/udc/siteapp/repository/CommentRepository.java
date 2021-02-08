@@ -12,7 +12,7 @@ import es.udc.siteapp.model.Comment;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 	@Modifying
-	@Query("from Comment where sitedetails_id = :siteDetailsId")
+	@Query("from Comment where sitedetails_id = :siteDetailsId order by createdAt desc")
 	List<Comment> findBySiteDetails(@Param("siteDetailsId") Long siteDetailsId);
 
 }

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.siteapp.model.Category;
-import es.udc.siteapp.model.Comment;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.service.SiteService;
+import es.udc.siteapp.service.dto.CommentDTO;
 import es.udc.siteapp.service.dto.SiteDTO;
 
 @RestController
@@ -98,14 +98,14 @@ public class SiteController {
 	}
 
 	@GetMapping("sites/comments/{id}")
-	public List<Comment> getCommentsById(@PathVariable(value = "id") Long siteId) {
+	public List<CommentDTO> getCommentsById(@PathVariable(value = "id") Long siteId) {
 		return siteService.getCommentsById(siteId);
 	}
 
-	@PostMapping("sites/comment/")
-	public Map<String, Boolean> insertComment(@RequestParam(value = "id") Long siteId,
-			@RequestParam(value = "autorId") Long autorId, @RequestParam(value = "comment") String text) {
-		siteService.insertComment(siteId, autorId, text);
+	@PostMapping("sites/comment/{id}")
+	public Map<String, Boolean> insertComment(@PathVariable(value = "id") Long siteId,
+			@RequestBody CommentDTO commentDto) {
+		siteService.insertComment(siteId, commentDto);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("insert", Boolean.TRUE);
 		return response;

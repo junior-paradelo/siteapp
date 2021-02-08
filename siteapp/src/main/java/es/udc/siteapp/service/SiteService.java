@@ -27,6 +27,7 @@ import es.udc.siteapp.repository.SiteDetailsRepository;
 import es.udc.siteapp.repository.SiteRepository;
 import es.udc.siteapp.repository.UserRepository;
 import es.udc.siteapp.repository.UserSiteRepository;
+import es.udc.siteapp.service.dto.CommentDTO;
 import es.udc.siteapp.service.dto.SiteDTO;
 
 @Service
@@ -120,17 +121,23 @@ public class SiteService {
 		return new SiteDTO(site);
 	}
 
-	public List<Comment> getCommentsById(Long siteId) {
+	public List<CommentDTO> getCommentsById(Long siteId) {
 		Site site = siteRepository.getOne(siteId);
 		SiteDetails siteDetails = site.getSiteDetails();
-		return commentRepository.findBySiteDetails(siteDetails.getId());
+		List<Comment> commentList = commentRepository.findBySiteDetails(siteDetails.getId());
+		List<CommentDTO> resultList = new LinkedList<>();
+		for (Comment comm : commentList) {
+			CommentDTO commentDTO = new CommentDTO(comm);
+			resultList.add(commentDTO);
+		}
+		return resultList;
 	}
 
-	public void insertComment(Long siteId, Long autorId, String text) {
+	public void insertComment(Long siteId, CommentDTO commentDto) {
 		Site site = siteRepository.getOne(siteId);
-		User user = userRepository.findByUserId(autorId).get(0);
+		User user = userRepository.findByUserId(commentDto.getAutorId()).get(0);
 		String realName = user.getFirstname() + " " + user.getLastname();
-		Comment comment = new Comment(realName, autorId, text, site.getSiteDetails());
+		Comment comment = new Comment(realName, commentDto.getAutorId(), commentDto.getText(), site.getSiteDetails());
 		commentRepository.save(comment);
 	}
 
