@@ -94,7 +94,12 @@ public class SiteService {
 	}
 
 	public List<SiteDTO> findSiteByKeywordAndCategory(String keyword, ArrayList<Integer> categories) {
-		List<Site> findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories);
+		List<Site> findSiteByKeyword = null;
+		if (categories == null) {
+			findSiteByKeyword = siteRepository.findSiteByKeyword(keyword);
+		} else {
+			findSiteByKeyword = siteRepository.findSiteByKeywordAndCategory(keyword, categories);
+		}
 		List<SiteDTO> siteDtoList = new LinkedList<>();
 		for (int i = 0; i < findSiteByKeyword.size(); i++) {
 			Site site = findSiteByKeyword.get(i);

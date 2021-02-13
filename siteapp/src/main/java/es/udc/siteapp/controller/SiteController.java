@@ -47,7 +47,7 @@ public class SiteController {
 
 	@GetMapping("sites/filter")
 	public List<SiteDTO> findSiteByKeywordAndCategory(@RequestParam(value = "keyword") String keyword,
-			@RequestParam(value = "categories") ArrayList<Integer> categories) {
+			@RequestParam(value = "categories", required = false) ArrayList<Integer> categories) {
 		return siteService.findSiteByKeywordAndCategory(keyword, categories);
 	}
 
