@@ -22,12 +22,6 @@ public class UploadAndDownloadFileController {
 	@Autowired
 	private FileStorageService fileStorageService;
 
-	@PostMapping("/upload/{id}")
-	public ResponseEntity<Void> uploadFile(@PathVariable Long id, @RequestParam("image") MultipartFile file) {
-		fileStorageService.storeFile(id, file);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
 	@PostMapping(value = "/uploads/{id}")
 	public ResponseEntity<Void> uploadFiles(@PathVariable Long id, @RequestParam("images") MultipartFile[] files) {
 		for (MultipartFile file : files) {

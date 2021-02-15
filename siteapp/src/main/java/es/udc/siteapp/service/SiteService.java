@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -200,8 +201,39 @@ public class SiteService {
 			Category category = categoryRepository.getOne(siteDto.getCategory());
 			site.setCategory(category);
 		}
+		if (siteDto.getLatitude() != null && siteDto.getLongitude() != null) {
+			GeometryFactory gf = new GeometryFactory();
+			Point coordinates = gf.createPoint(new Coordinate(siteDto.getLatitude(), siteDto.getLongitude()));
+			site.setCoordinates(coordinates);
+		}
+		if (siteDto.getLatitudePark() != null && siteDto.getLongitudePark() != null) {
+			GeometryFactory gf = new GeometryFactory();
+			Point coordinates = gf.createPoint(new Coordinate(siteDto.getLatitudePark(), siteDto.getLongitudePark()));
+			site.setCoordinatesPark(coordinates);
+		}
 		if (siteDto.getDescription() != null) {
 			site.setDescription(siteDto.getDescription());
+		}
+		SiteDetails siteDetailsDto = siteDto.getSiteDetails();
+		if (siteDetailsDto != null) {
+			if (siteDetailsDto.getHeader() != null) {
+				site.getSiteDetails().setHeader(siteDetailsDto.getHeader());
+			}
+			if (siteDetailsDto.getResume() != null) {
+				site.getSiteDetails().setResume(siteDetailsDto.getResume());
+			}
+			if (siteDetailsDto.getConstraints() != null) {
+				site.getSiteDetails().setConstraints(siteDetailsDto.getConstraints());
+			}
+			if (siteDetailsDto.getGoCar() != null) {
+				site.getSiteDetails().setGoCar(siteDetailsDto.getGoCar());
+			}
+			if (siteDetailsDto.getGoChildren() != null) {
+				site.getSiteDetails().setGoChildren(siteDetailsDto.getGoChildren());
+			}
+			if (siteDetailsDto.getAccessType() != null) {
+				site.getSiteDetails().setAccessType(siteDetailsDto.getAccessType());
+			}
 		}
 
 		Site siteSave = siteRepository.save(site);
