@@ -42,8 +42,10 @@ public class UserSiteService {
 			User user = userRepository.getOne(userId);
 			Site site = siteRepository.getOne(siteId);
 			userSite = new UserSite(site, user, rate, userSiteState);
-			userSiteRepository.save(userSite);
+		} else {
+			userSite.setRate(rate);
 		}
+		userSiteRepository.save(userSite);
 	}
 
 	public UserSiteDTO findByUserAndSiteId(Long userId, Long siteId, String state) {
