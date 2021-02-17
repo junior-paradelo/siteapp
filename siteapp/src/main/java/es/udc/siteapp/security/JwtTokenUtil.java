@@ -7,13 +7,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@Component
+@Service
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = 7165451790364465583L;
@@ -112,7 +112,7 @@ public class JwtTokenUtil implements Serializable {
 		return generateToken(claims);
 	}
 
-	String generateToken(Map<String, Object> claims) {
+	private String generateToken(Map<String, Object> claims) {
 		return Jwts.builder().setClaims(claims).setExpiration(generateExpirationDate())
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
