@@ -2,6 +2,8 @@ package es.udc.siteapp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,4 +21,8 @@ public class Category {
 
 	@Column(length = 50, nullable = false)
 	private String name;
+
+	@Column(length = 50, nullable = true)
+	@Enumerated(EnumType.STRING)
+	private Theme theme;
 }

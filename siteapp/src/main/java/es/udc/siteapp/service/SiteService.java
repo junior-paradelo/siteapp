@@ -21,6 +21,7 @@ import es.udc.siteapp.model.Category;
 import es.udc.siteapp.model.Comment;
 import es.udc.siteapp.model.Site;
 import es.udc.siteapp.model.SiteDetails;
+import es.udc.siteapp.model.Theme;
 import es.udc.siteapp.model.User;
 import es.udc.siteapp.repository.CategoryRepository;
 import es.udc.siteapp.repository.CommentRepository;
@@ -248,6 +249,11 @@ public class SiteService {
 
 	public List<Category> findAllCategories() {
 		return categoryRepository.findAll();
+	}
+
+	public List<Category> findCategoriesByTheme(String theme) {
+		Theme tema = Theme.valueOf(theme);
+		return categoryRepository.findByTheme(tema);
 	}
 
 }

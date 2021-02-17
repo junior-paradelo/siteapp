@@ -18,14 +18,14 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
 	List<Site> findTop20ByOrderByCreatedAtDesc();
 
 	@Modifying
-	@Query("from Site where category_id = :categoryId order by created_at desc")
+	@Query("from Site where category_id = :categoryId order by lower(name) asc")
 	List<Site> findByCategory(@Param("categoryId") Long categoryId);
 
-	@Query("from Site where lower(name) like lower(concat('%',:keyword,'%')) and category_id in (:categories) order by name asc")
+	@Query("from Site where lower(name) like lower(concat('%',:keyword,'%')) and category_id in (:categories) order by lower(name) asc")
 	List<Site> findSiteByKeywordAndCategory(@Param("keyword") String keyword,
 			@Param("categories") ArrayList<Integer> categories);
 
-	@Query("from Site where lower(name) like lower(concat('%',:keyword,'%')) order by name asc")
+	@Query("from Site where lower(name) like lower(concat('%',:keyword,'%')) order by lower(name) asc")
 	List<Site> findSiteByKeyword(@Param("keyword") String keyword);
 
 	List<Site> findByNameContainingIgnoreCase(String siteName);

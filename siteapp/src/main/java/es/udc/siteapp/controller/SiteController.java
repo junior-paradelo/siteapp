@@ -92,11 +92,6 @@ public class SiteController {
 		return response;
 	}
 
-	@GetMapping("sites/categories")
-	public List<Category> findAllCategories() {
-		return siteService.findAllCategories();
-	}
-
 	@GetMapping("sites/comments/{id}")
 	public List<CommentDTO> getCommentsById(@PathVariable(value = "id") Long siteId) {
 		return siteService.getCommentsById(siteId);
@@ -109,5 +104,15 @@ public class SiteController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("insert", Boolean.TRUE);
 		return response;
+	}
+
+	@GetMapping("sites/categories")
+	public List<Category> findAllCategories() {
+		return siteService.findAllCategories();
+	}
+
+	@GetMapping("sites/categories/theme")
+	public List<Category> findCategoriesByTheme(@RequestParam(value = "theme") String theme) {
+		return siteService.findCategoriesByTheme(theme);
 	}
 }
